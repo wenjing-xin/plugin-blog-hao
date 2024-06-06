@@ -5,7 +5,7 @@ plugins {
     id "run.halo.plugin.devtools" version "0.0.9"
 }
 
-group 'run.halo.starter'
+group 'xin.wenjing.MultipleContentShow'
 sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
