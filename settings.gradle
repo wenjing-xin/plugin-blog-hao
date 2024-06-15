@@ -3,5 +3,5 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-rootProject.name = 'plugin-multiple-content-show'
+rootProject.name = 'plugin-blog-hao'
 
