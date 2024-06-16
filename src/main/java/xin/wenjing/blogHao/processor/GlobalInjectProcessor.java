@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 import run.halo.app.plugin.SettingFetcher;
 import run.halo.app.theme.dialect.TemplateHeadProcessor;
 import xin.wenjing.blogHao.entity.Settings;
-import xin.wenjing.blogHao.util.ContentUtils;
+import xin.wenjing.blogHao.util.ScriptContentUtils;
 
 /**
  * 功能描述
@@ -27,18 +27,38 @@ public class GlobalInjectProcessor implements TemplateHeadProcessor {
     @Override
     public Mono<Void> process(ITemplateContext context, IModel model, IElementModelStructureHandler structureHandler) {
 
-        Settings.CopyAdd copyAdd = settingFetcher
-            .fetch(Settings.CopyAdd.GROUP_NAME, Settings.CopyAdd.class)
-            .orElse(new Settings.CopyAdd());
+        String scriptRes = finalScript(context);
 
-        if(copyAdd.getContentPageOnly() && ContentUtils.notContentTemplate(context)){
+        if(scriptRes == null && scriptRes.length() == 0){
             return Mono.empty();
         }
 
-        String copyAddScript = ContentUtils.copyAddScrProcess(copyAdd.getCopyAddContent(), copyAdd.getDivideType(), copyAdd.getCopyMinLength());
         final IModelFactory modelFactory = context.getModelFactory();
-        return Mono.just(modelFactory.createText(copyAddScript)).doOnNext(model::add).then();
+        return Mono.just(modelFactory.createText(scriptRes)).doOnNext(model::add).then();
     }
 
+    private String finalScript(ITemplateContext context) {
 
+        StringBuilder injectCode = new StringBuilder();
+
+        Settings.CopyAdd copyAdd = settingFetcher.fetch(Settings.CopyAdd.GROUP_NAME, Settings.CopyAdd.class)
+            .orElse(new Settings.CopyAdd());
+        Settings.MiniTool miniTool =settingFetcher.fetch(Settings.MiniTool.GROUP_NAME, Settings.MiniTool.class)
+            .orElse(new Settings.MiniTool());
+
+        // 复制内容追加
+        if(copyAdd.isContentPageOnly() && ScriptContentUtils.notContentTemplate(context)){
+            injectCode.append("");
+        }else{
+            String copyAddScript = ScriptContentUtils.copyAddScrProcess(copyAdd.getCopyAddContent(), copyAdd.getDivideType(), copyAdd.getCopyMinLength());
+            injectCode.append(copyAddScript);
+        }
+
+        // 中英文空格脚本
+        if(miniTool.getContentSpace().isEnableContentSpace()){
+            injectCode.append(ScriptContentUtils.panguScript(miniTool));
+        }
+
+        return injectCode.toString();
+    }
 }

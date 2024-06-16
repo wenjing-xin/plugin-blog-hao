@@ -2,6 +2,7 @@ package xin.wenjing.blogHao.util;
 
 import org.springframework.util.PropertyPlaceholderHelper;
 import org.thymeleaf.context.ITemplateContext;
+import xin.wenjing.blogHao.entity.Settings;
 import java.util.Properties;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Properties;
  * @author: dreamChaser
  * @date: 2024年06月15日 23:53
  */
-public class ContentUtils {
+public class ScriptContentUtils {
 
     private static final String TEMPLATE_ID_VARIABLE = "_templateId";
 
@@ -40,7 +41,7 @@ public class ContentUtils {
 
         final String scriptContent =
             """
-                <script data-pjax>
+                <script data-pjax type="text/javascript">
                     function contentParse(content) {
                         let parsed = content;
                         parsed = parsed.replaceAll("#url", window.location.href);
@@ -71,5 +72,24 @@ public class ContentUtils {
         return !"post".equals(context.getVariable(TEMPLATE_ID_VARIABLE))
             && !"page".equals(context.getVariable(TEMPLATE_ID_VARIABLE));
     }
+
+    /**
+     * 内容中英文空格脚本
+     * @param config
+     * @return
+     */
+    public static String panguScript(Settings.MiniTool config) {
+
+        return """
+                <script data-pjax src="/plugins/plugin-blog-hao/assets/static/libs/pangu-4.0.7/pangu.min.js"></script>
+                <script data-pjax type="text/javascript">
+                    %s
+                    document.addEventListener("DOMContentLoaded", function() {
+                       pangu.autoSpacingPage();
+                    })
+                </script>              
+                """.formatted(config.getContentSpace().getScanContent());
+    }
+
 
 }

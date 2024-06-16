@@ -12,13 +12,35 @@ import lombok.Data;
 @AllArgsConstructor
 public class Settings {
 
+    /**
+     * 复制追加配置
+     */
     @Data
     public static class CopyAdd{
         public final static String GROUP_NAME = "copyAdd";
         private String copyAddContent;
         private String divideType;
         private String copyMinLength;
-        private Boolean contentPageOnly;
+        private boolean contentPageOnly;
+    }
+
+    /**
+     * 小工具配置
+     */
+    @Data
+    public static class MiniTool{
+        public final static String GROUP_NAME = "miniTools";
+        private ContentSpace contentSpace;
+    }
+
+    /**
+     * 小工具配置的子内容
+     * 文章内容空格
+     */
+    @Data
+    public static class ContentSpace{
+        private boolean enableContentSpace;
+        private String scanContent;
     }
 
 }

@@ -6,6 +6,7 @@ metadata:
 
 spec:
     forms:
+
       - group: copyAdd
         label: "复制追加"
         formSchema:
@@ -44,3 +45,32 @@ spec:
                 value: true
               - label: 禁用
                 value: false
+
+      - group: miniTools
+        label: 小工具
+        formSchema:
+          - $formkit: group
+            name: contentSpace
+            label: 内容的中英文、符号之间自动添加空格
+            value:
+              enableContentSpace: false
+              scanContent:
+            children:
+              - $formkit: radio
+                name: enableContentSpace
+                key: enableContentSpace
+                id: enableContentSpace
+                help: 是否启用
+                value: false
+                options:
+                  - label: 启用
+                    value: true
+                  - label: 禁用
+                    value: false
+              - $formkit: textarea
+                if: $get(enableContentSpace).value
+                label: 内容的中英文、符号之间自动添加空格
+                name: scanContent
+                value: "pangu.spacingElementByTagName('body');"
+                rows: 3
+                help: 写法参考 https://github.com/vinta/pangu.js
