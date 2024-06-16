@@ -74,6 +74,20 @@ public class ScriptContentUtils {
     }
 
     /**
+     * 返回模版名称
+     * @param context
+     * @return
+     */
+    public static String getTemplateId(ITemplateContext context) {
+        try {
+            String  templateName = context.getVariable(TEMPLATE_ID_VARIABLE).toString();
+            return templateName != null && templateName.length() > 0 ? templateName : "";
+        }catch (Exception e){
+            return "";
+        }
+    }
+
+    /**
      * 内容中英文空格脚本
      * @param config
      * @return
@@ -91,5 +105,23 @@ public class ScriptContentUtils {
                 """.formatted(config.getContentSpace().getScanContent());
     }
 
+    /**
+     * 站点失色样式
+     * @return
+     */
+    public static String colorlessStyle() {
+        return """
+            <style type="text/css">
+                html {
+                   filter: grayscale(100%);
+                   -webkit-filter: grayscale(100%);
+                   -moz-filter: grayscale(100%);
+                   -ms-filter: grayscale(100%);
+                   -o-filter: grayscale(100%);
+                   -webkit-filter: grayscale(1);
+                }
+            </style>
+            """;
+    }
 
 }

@@ -40,7 +40,6 @@ public class GlobalInjectProcessor implements TemplateHeadProcessor {
     private String finalScript(ITemplateContext context) {
 
         StringBuilder injectCode = new StringBuilder();
-
         Settings.CopyAdd copyAdd = settingFetcher.fetch(Settings.CopyAdd.GROUP_NAME, Settings.CopyAdd.class)
             .orElse(new Settings.CopyAdd());
         Settings.MiniTool miniTool =settingFetcher.fetch(Settings.MiniTool.GROUP_NAME, Settings.MiniTool.class)
@@ -68,4 +67,6 @@ public class GlobalInjectProcessor implements TemplateHeadProcessor {
 
         return injectCode.toString();
     }
+
+
 }

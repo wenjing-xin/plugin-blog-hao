@@ -2,6 +2,7 @@ package xin.wenjing.blogHao.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import java.time.LocalDate;
 
 /**
  * 功能描述
@@ -32,6 +33,7 @@ public class Settings {
         public final static String GROUP_NAME = "miniTools";
         private ContentSpace contentSpace;
         private ContentIndent contentIndent;
+        private Colorless colorless;
     }
 
     /**
@@ -52,6 +54,17 @@ public class Settings {
     public static class ContentIndent{
         private boolean enableContentIndent;
         private String indentNodeName;
+    }
+
+    /**
+     * 小工具配置的子内容
+     * 全站失色
+     */
+    @Data
+    public static class Colorless{
+        private boolean enableColorless;
+        private boolean colorlessScope;
+        private LocalDate selfCloseAt;
     }
 
 }
