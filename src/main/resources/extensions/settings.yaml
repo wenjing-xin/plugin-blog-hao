@@ -1,0 +1,46 @@
+apiVersion: v1alpha1
+kind: Setting
+
+metadata:
+    name: plugin-blog-hao-setting
+
+spec:
+    forms:
+      - group: copyAdd
+        label: "复制追加"
+        formSchema:
+          - $formkit: textarea
+            name: copyAddContent
+            label: "追加内容"
+            value: "请遵循站内知识共享协议,出处：#url；站点：#site"
+            rows: 5
+            help: "在站点内复制内容会在其后附加自定义的内容，支持的占位符：#url 当前页面url、#site 站点域名"
+          - $formkit: select
+            name: divideType
+            label: "分割类型"
+            value: space
+            help: "复制文本与附加内容的分离方式"
+            options:
+              - label: "空格"
+                value: space
+              - label: "横线 ---"
+                value: line
+              - label: "空行"
+                value: emptyLine
+          - $formkit: number
+            name: copyMinLength
+            label: "免除追加的字数"
+            value: 10
+            help: "复制文本字数小于等于免除追加字数将不会添加内容，若小于等于0则对所有复制文本添加内容"
+          - $formkit: radio
+            name: contentPageOnly
+            key: contentPageOnly
+            id: contentPageOnly
+            label: "仅文章页面和独立页面生效"
+            value: false
+            help: "启用后则只对文章页面、独立页面复制时追加内容，否则所有内容复制时追加内容,如果主题开启了Pjax，请禁用此选项，否则pjax的缓存会导致功能无法生效！"
+            options:
+              - label: 启用
+                value: true
+              - label: 禁用
+                value: false

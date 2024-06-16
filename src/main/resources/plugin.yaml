@@ -17,3 +17,5 @@ spec:
   license:
     - name: "GPL-3.0"
       url: "https://github.com/halo-dev/plugin-starter/blob/main/LICENSE"
+  settingName: plugin-blog-hao-setting
+  configMapName: plugin-blog-hao-configMap
