@@ -59,6 +59,13 @@ public class GlobalInjectProcessor implements TemplateHeadProcessor {
             injectCode.append(ScriptContentUtils.panguScript(miniTool));
         }
 
+        // 段落内容首行缩进
+        if(miniTool.getContentIndent().isEnableContentIndent()){
+            injectCode.append("""
+                              <style type="text/css"> %s p:not(li>p):not(blockquote>p){text-indent: 2em;} </style>
+                              """.formatted(miniTool.getContentIndent().getIndentNodeName()));
+        }
+
         return injectCode.toString();
     }
 }

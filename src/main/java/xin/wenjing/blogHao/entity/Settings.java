@@ -31,6 +31,7 @@ public class Settings {
     public static class MiniTool{
         public final static String GROUP_NAME = "miniTools";
         private ContentSpace contentSpace;
+        private ContentIndent contentIndent;
     }
 
     /**
@@ -41,6 +42,16 @@ public class Settings {
     public static class ContentSpace{
         private boolean enableContentSpace;
         private String scanContent;
+    }
+
+    /**
+     * 小工具配置的子内容
+     * 文章内容首行缩进
+     */
+    @Data
+    public static class ContentIndent{
+        private boolean enableContentIndent;
+        private String indentNodeName;
     }
 
 }

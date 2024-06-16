@@ -74,3 +74,28 @@ spec:
                 value: "pangu.spacingElementByTagName('body');"
                 rows: 3
                 help: 写法参考 https://github.com/vinta/pangu.js
+          - $formkit: group
+            name: contentIndent
+            label: 文本内容首行缩进
+            help: 开启后则在段落的首行缩进两个空格
+            value:
+              enableContentIndent: false
+              indentNodeName:
+            children:
+              - $formkit: radio
+                name: enableContentIndent
+                key: enableContentIndent
+                id: enableContentIndent
+                help: 是否启用
+                value: false
+                options:
+                  - label: 启用
+                    value: true
+                  - label: 禁用
+                    value: false
+              - $formkit: text
+                if: $get(enableContentIndent).value
+                label: 内容缩进的节点类名或者ID名
+                name: indentNodeName
+                value: "#post"
+                help: 根据自己使用的主题选择要适配的内容节点
