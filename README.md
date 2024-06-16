@@ -1,6 +1,7 @@
-# plugin-multiple-content-show
+# plugin-blog-hao
+**让你的博客变得更好**
 
-为halo站点的单页面和文章集成 swiper幻灯片、PDF等文件展示功能！
+> 为你的博客和站点增加一些更使用的功能，比如文本复制追加功能，单页面和文章集成 swiper幻灯片、PDF等文件展示功能！总之，只要有需求，就有功能！
 
 ## 插件正在开发中
 
