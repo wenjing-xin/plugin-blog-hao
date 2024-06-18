@@ -64,7 +64,13 @@ public class GlobalInjectProcessor implements TemplateHeadProcessor {
                               <style type="text/css"> %s p:not(li>p):not(blockquote>p){text-indent: 2em;} </style>
                               """.formatted(miniTool.getContentIndent().getIndentNodeName()));
         }
-
+        // 幻灯片相关文件，只为文章页面和单独页面添加
+        if(!ScriptContentUtils.notContentTemplate(context)) {
+            injectCode.append("""
+                <link rel="stylesheet" type="text/css" href="https://unpkg.com/webppt@1.0.11/dist/style.css" />
+                <script src="https://unpkg.com/webppt@1.0.11/dist/index.min.js" data-pjax></script>
+                """);
+        }
         return injectCode.toString();
     }
 
