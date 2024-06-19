@@ -1,5 +1,6 @@
 package xin.wenjing.blogHao.util;
 
+import org.pf4j.PluginWrapper;
 import org.springframework.util.PropertyPlaceholderHelper;
 import org.thymeleaf.context.ITemplateContext;
 import xin.wenjing.blogHao.entity.Settings;
@@ -17,7 +18,6 @@ public class ScriptContentUtils {
 
     static final PropertyPlaceholderHelper
         PROPERTY_PLACEHOLDER_HELPER = new PropertyPlaceholderHelper("${", "}");
-
 
     /**
      * 复制追加内容处理
@@ -124,4 +124,20 @@ public class ScriptContentUtils {
             """;
     }
 
+    /**
+     * 自定义标签元素脚本
+     * @param version 版本号
+     * @return
+     */
+    public static String blogHaoEle(String version){
+
+        final Properties properties = new Properties();
+        properties.setProperty("version", version);
+
+        final String scriptTmpl = """
+            <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/customEle/customEle.css?version=${version}" />
+            <script data-pjax src="/plugins/plugin-blog-hao/assets/static/libs/customEle/bloghaoTag.js?version=${version}"></script>
+            """;
+        return PROPERTY_PLACEHOLDER_HELPER.replacePlaceholders(scriptTmpl, properties);
+    }
 }
