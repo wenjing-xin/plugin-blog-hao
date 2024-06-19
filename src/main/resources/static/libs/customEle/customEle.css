@@ -7,3 +7,8 @@
     margin: 0 auto;
     border-radius: 5px;
 }
+
+details.folding-tag .content{
+    padding: 3px;
+    margin-bottom: 10px;
+}

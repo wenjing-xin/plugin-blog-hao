@@ -71,10 +71,34 @@ function extractHeight(occupied, width, height) {
             }
         }
 
+        class BlogHaoFoldBox extends HTMLElement {
+            constructor() {
+                super();
+                this.options = {
+                    title: this.getAttribute("title"),
+                    color: this.getAttribute("color") || '',
+                    type:  this.getAttribute("type") || ''
+                };
+                const _temp = getDirectEle(this, "_tpl");
+                let contents = _temp.innerHTML.trim().replace(/^(<br>)|(<br>)$/g, "");
+                let htmlStr = `
+                                <details class="folding-tag" ${this.options.type}>
+                                    <summary style="background: ${this.options.color}">${this.options.title}</summary>
+                                    <div class="content">
+                                       ${contents}
+                                    </div>
+                                </details>
+                               `;
+                this.innerHTML = htmlStr;
+            }
+        }
         // PDF嵌入
         customElements.define("bloghao-pdf", PDFDom);
         // B站视频
         customElements.define("bloghao-bili", BiliDom);
+        // 折叠框嵌入
+        customElements.define("bloghao-fold",BlogHaoFoldBox);
+
     })
 
     document.addEventListener("pjax:complete", () => {
