@@ -1,14 +1,22 @@
 .bloghao-pdf{
     border-radius: 5px;
-    margin: 7px auto;
+    margin: 15px auto;
 }
 .bloghao-pdf .iframe-dom{
     width: 98%;
-    margin: 0 auto;
+    margin: 0px auto;
     border-radius: 5px;
 }
+.bilibili-iframe-dom{
+    margin: 15px auto;
+}
 
-details.folding-tag .content{
-    padding: 3px;
-    margin-bottom: 10px;
+.swiper {
+    width: 98%;
+    margin: 10px auto;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    height: auto;
+}
+.swiper .swiper-slide{
+    margin-left: 3px;
 }

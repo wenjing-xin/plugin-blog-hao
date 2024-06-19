@@ -36,7 +36,7 @@ function extractHeight(occupied, width, height) {
                 this.options = {
                     src: this.getAttribute("src") || "",
                     width: this.getAttribute("width") || "100%",
-                    height: this.getAttribute("height") || "500",
+                    height: this.getAttribute("height") || "800",
                 };
                 this.render();
             }
@@ -45,7 +45,7 @@ function extractHeight(occupied, width, height) {
                 const realHeight = extractHeight(this.parentElement.offsetWidth, this.options.width, this.options.height);
                 this.setAttribute("height", realHeight);
                 this.innerHTML = `
-                        <div class="tool_pdf">
+                        <div class="bloghao-pdf">
                             <iframe class="iframe-dom" src="${this.options.src}" style="width:${this.options.width}; height:${realHeight}px;"></iframe>
                         </div>`;
             }
@@ -67,42 +67,54 @@ function extractHeight(occupied, width, height) {
                 const realHeight = extractHeight(this.parentElement.offsetWidth, this.options.width, this.options.height);
                 this.setAttribute("height", realHeight);
                 this.innerHTML = `
-                        <iframe class="iframe-dom" allowfullscreen="true" scrolling="no" border="0" frameborder="no" framespacing="0" class="tool_vplayer" src="//player.bilibili.com/player.html?bvid=${this.options.bvid}&page=${this.options.page}" style="width:${this.options.width}; height:${realHeight}px;"></iframe>`;
+                        <iframe class="bilibili-iframe-dom" allowfullscreen="true" scrolling="no" border="0" frameborder="no" framespacing="0" class="tool_vplayer" src="//player.bilibili.com/player.html?bvid=${this.options.bvid}&page=${this.options.page}" style="width:${this.options.width}; height:${realHeight}px;"></iframe>`;
             }
         }
 
-        class BlogHaoFoldBox extends HTMLElement {
+        class ImgGallery extends HTMLElement {
             constructor() {
                 super();
                 this.options = {
-                    title: this.getAttribute("title"),
-                    color: this.getAttribute("color") || '',
-                    type:  this.getAttribute("type") || ''
+                    height: this.getAttribute("height") || 300
                 };
-                const _temp = getDirectEle(this, "_tpl");
-                let contents = _temp.innerHTML.trim().replace(/^(<br>)|(<br>)$/g, "");
-                let htmlStr = `
-                                <details class="folding-tag" ${this.options.type}>
-                                    <summary style="background: ${this.options.color}">${this.options.title}</summary>
-                                    <div class="content">
-                                       ${contents}
+                const _imgs = getDirectEle(this, "_img");
+                let _innerHTML = _imgs.innerHTML.trim().replace(/^(<br>)|(<br>)$/g, "");
+                let contents = "";
+                let configOptions = this.options
+                _innerHTML.replace(
+                        /{([^}]*)}/g,
+                        function ($0, $1) {
+                            var str = $1.split(",");
+                            str.forEach((item) => {
+                                contents += `
+								<div class="swiper-slide">
+									<img style="height: ${configOptions.height}px;" src="${item}" alt="image" />
+								</div>
+							`;
+                            });
+                        }
+                );
+                let htmlStr = `<div class="swiper">
+                                    <div class="swiper-wrapper">
+                                        ${contents}
                                     </div>
-                                </details>
-                               `;
+                               </div>`;
                 this.innerHTML = htmlStr;
             }
         }
+
         // PDF嵌入
         customElements.define("bloghao-pdf", PDFDom);
         // B站视频
         customElements.define("bloghao-bili", BiliDom);
-        // 折叠框嵌入
-        customElements.define("bloghao-fold",BlogHaoFoldBox);
+        // 图片走马灯嵌入
+        customElements.define("bloghao-img-slide", ImgGallery);
+
 
     })
 
     document.addEventListener("pjax:complete", () => {
-        window.location.reload();
+
     })
 
 })();
