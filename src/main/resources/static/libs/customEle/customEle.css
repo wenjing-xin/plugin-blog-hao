@@ -12,11 +12,15 @@
 }
 
 .swiper {
-    width: 98%;
     margin: 10px auto;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     height: auto;
+    padding: 0;
 }
 .swiper .swiper-slide{
     margin-left: 3px;
+    padding: 0;
+}
+
+.swiper .swiper-slide img{
+    margin: 0 auto;
 }

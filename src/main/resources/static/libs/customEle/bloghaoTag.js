@@ -75,12 +75,14 @@ function extractHeight(occupied, width, height) {
             constructor() {
                 super();
                 this.options = {
-                    height: this.getAttribute("height") || 300
+                    width: this.getAttribute("width") || "98%",
+                    height: this.getAttribute("height") || 300,
+                    type: this.getAttribute("type") || "normal",
                 };
                 const _imgs = getDirectEle(this, "_img");
                 let _innerHTML = _imgs.innerHTML.trim().replace(/^(<br>)|(<br>)$/g, "");
                 let contents = "";
-                let configOptions = this.options
+                let configOptions = this.options;
                 _innerHTML.replace(
                         /{([^}]*)}/g,
                         function ($0, $1) {
@@ -94,7 +96,22 @@ function extractHeight(occupied, width, height) {
                             });
                         }
                 );
-                let htmlStr = `<div class="swiper">
+                let swipperIdName = "";
+                switch (this.options.type){
+                    case "slides":
+                        swipperIdName = "bloghao-img-slide";
+                        break;
+                    case "coverflow":
+                        swipperIdName = "bloghao-img-coverflow";
+                        break;
+                    case "card":
+                        swipperIdName = "bloghao-img-card";
+                        break;
+                    default:
+                        swipperIdName = "bloghao-img-normal";
+                }
+
+                let htmlStr = `<div class="swiper" id="${swipperIdName}" style="width:${this.options.width};">
                                     <div class="swiper-wrapper">
                                         ${contents}
                                     </div>
@@ -108,7 +125,7 @@ function extractHeight(occupied, width, height) {
         // B站视频
         customElements.define("bloghao-bili", BiliDom);
         // 图片走马灯嵌入
-        customElements.define("bloghao-img-slide", ImgGallery);
+        customElements.define("bloghao-img-swipper", ImgGallery);
 
 
     })

@@ -1,11 +1,36 @@
 (function() {
     document.addEventListener("DOMContentLoaded", () => {
-        if(document.querySelector(".swiper")){
-            const mySwiper = new Swiper ('.swiper', {
+        if(document.querySelector("#bloghao-img-slide")){
+            new Swiper ('#bloghao-img-slide', {
                 direction: 'horizontal', // 垂直切换选项
                 loop: true, // 循环模式选项
                 autoplay: true,
                 slidesPerView: 2,
+            })
+        }
+        if(document.querySelector("#bloghao-img-coverflow")){
+            new Swiper ('#bloghao-img-coverflow', {
+                direction: 'horizontal', // 垂直切换选项
+                loop: true, // 循环模式选项
+                autoplay: true,
+                effect: 'coverflow',
+                slidesPerView: 3,
+                centeredSlides: true
+            })
+        }
+        if(document.querySelector("#bloghao-img-card")){
+            new Swiper ('#bloghao-img-card', {
+                direction: 'horizontal',
+                loop: true,
+                autoplay: true,
+                effect: 'cards'
+            })
+        }
+        if(document.querySelector("#bloghao-img-normal")){
+            new Swiper ('#bloghao-img-normal', {
+                direction: 'horizontal',
+                loop: true,
+                autoplay: true
             })
         }
     })
