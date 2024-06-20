@@ -24,3 +24,21 @@
 .swiper .swiper-slide img{
     margin: 0 auto;
 }
+
+#gallery-thumbs {
+    width: 92%;
+    height: 120px;
+    line-height: 120px;
+    box-sizing: border-box;
+    padding: 15px 0 0;
+}
+.swiper-wrapper .swiper-slide{
+    margin: 0 auto;
+}
+#gallery-thumbs .swiper-wrapper .swiper-slide img{
+    height: 100px !important;
+    border-radius: 8px;
+}
+#bloghao-img-thumb{
+    margin-bottom: -15px;
+}

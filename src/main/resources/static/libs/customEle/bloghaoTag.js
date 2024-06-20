@@ -107,6 +107,9 @@ function extractHeight(occupied, width, height) {
                     case "card":
                         swipperIdName = "bloghao-img-card";
                         break;
+                    case "thumbs":
+                        swipperIdName = "bloghao-img-thumbs";
+                        break;
                     default:
                         swipperIdName = "bloghao-img-normal";
                 }
@@ -120,18 +123,54 @@ function extractHeight(occupied, width, height) {
             }
         }
 
+        class ImgGalleryThumbs extends HTMLElement {
+            constructor() {
+                super();
+                this.options = {
+                    width: this.getAttribute("width") || "92%",
+                    height: this.getAttribute("height") || 350,
+                    type: this.getAttribute("type") || "normal",
+                };
+                const _imgs = getDirectEle(this, "_img");
+                let _innerHTML = _imgs.innerHTML.trim().replace(/^(<br>)|(<br>)$/g, "");
+                let contents = "";
+                let configOptions = this.options;
+                _innerHTML.replace(
+                        /{([^}]*)}/g,
+                        function ($0, $1) {
+                            var str = $1.split(",");
+                            str.forEach((item) => {
+                                contents += `
+								<div class="swiper-slide">
+									<img style="height: ${configOptions.height}px;width: 100%" src="${item}" alt="image" />
+								</div>
+							`;
+                            });
+                        }
+                );
+
+                let htmlStr = `<div class="swiper" id="bloghao-img-thumb" style="width:${this.options.width};">
+                                    <div class="swiper-wrapper">
+                                        ${contents}
+                                    </div>
+                                </div>
+                                <div class="swiper" id="gallery-thumbs">
+                                    <div class="swiper-wrapper">
+                                        ${contents}
+                                    </div>
+                                </div>`;
+                this.innerHTML = htmlStr;
+            }
+        }
+
         // PDF嵌入
         customElements.define("bloghao-pdf", PDFDom);
         // B站视频
         customElements.define("bloghao-bili", BiliDom);
         // 图片走马灯嵌入
         customElements.define("bloghao-img-swipper", ImgGallery);
-
-
-    })
-
-    document.addEventListener("pjax:complete", () => {
+        // 图片轮播展示 thumb类型
+        customElements.define("bloghao-img-thumb", ImgGalleryThumbs);
 
     })
-
 })();

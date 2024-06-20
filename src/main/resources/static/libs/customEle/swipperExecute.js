@@ -1,10 +1,11 @@
 (function() {
-    document.addEventListener("DOMContentLoaded", () => {
+    function executeSwiperInit(){
         if(document.querySelector("#bloghao-img-slide")){
             new Swiper ('#bloghao-img-slide', {
                 direction: 'horizontal', // 垂直切换选项
                 loop: true, // 循环模式选项
                 autoplay: true,
+                mousewheel: true,
                 slidesPerView: 2,
             })
         }
@@ -15,6 +16,7 @@
                 autoplay: true,
                 effect: 'coverflow',
                 slidesPerView: 3,
+                mousewheel: true,
                 centeredSlides: true
             })
         }
@@ -23,6 +25,7 @@
                 direction: 'horizontal',
                 loop: true,
                 autoplay: true,
+                mousewheel: true,
                 effect: 'cards'
             })
         }
@@ -33,22 +36,31 @@
                 autoplay: true
             })
         }
-    })
-    document.addEventListener("pjax:complete", () => {
-        if(document.querySelector(".swiper")){
-            const mySwiper = new Swiper ('.swiper', {
-                direction: 'vertical', // 垂直切换选项
-                loop: true, // 循环模式选项
-                // 如果需要分页器
-                pagination: {
-                    el: '.swiper-pagination',
-                },
-                // 如果需要前进后退按钮
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
+        if(document.querySelector("#bloghao-img-thumb")){
+            const galleryThumbs = new Swiper('#gallery-thumbs', {
+                loop: true,
+                autoplay: true,
+                spaceBetween: 5,
+                slidesPerView: 4,
+                watchSlidesVisibility: true,//防止不可点击
+            });
+            new Swiper ('#bloghao-img-thumb', {
+                spaceBetween: 5,
+                direction: 'horizontal',
+                loop: true,
+                autoplay: true,
+                thumbs: {
+                    swiper: galleryThumbs,
                 }
             })
         }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        executeSwiperInit()
     })
+    document.addEventListener("pjax:complete", () => {
+        executeSwiperInit();
+    })
+
 })();
