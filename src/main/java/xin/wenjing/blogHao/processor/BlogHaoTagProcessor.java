@@ -32,7 +32,7 @@ public class BlogHaoTagProcessor implements TemplateHeadProcessor {
     public Mono<Void> process(ITemplateContext context, IModel model,
         IElementModelStructureHandler structureHandler) {
         final IModelFactory modelFactory = context.getModelFactory();
-        // 全响应式链路
+
         return InferStream.<Void>infer(true)
             .success(() -> settingFetcher
                 .fetch("miniTools", Settings.MiniTool.class)

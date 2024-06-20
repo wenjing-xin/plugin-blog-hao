@@ -14,6 +14,16 @@ import java.time.LocalDate;
 public class Settings {
 
     /**
+     * 幻灯片相关配置
+     */
+    @Data
+    public static class SlideConfig{
+        public final static String GROUP_NAME = "slideConfig";
+        private boolean enableSlide;
+        private String themeName;
+    }
+
+    /**
      * 复制追加配置
      */
     @Data

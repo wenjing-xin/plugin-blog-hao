@@ -144,4 +144,23 @@ public class ScriptContentUtils {
             """;
         return PROPERTY_PLACEHOLDER_HELPER.replacePlaceholders(scriptTmpl, properties);
     }
+
+    public static String slideScript(String theme){
+        final Properties properties = new Properties();
+        properties.setProperty("themeName", theme);
+        final String scriptTmpl = """
+                <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/revealjs/dist/reset.css" />
+                <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/revealjs/dist/reveal.css" />
+                <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/revealjs/dist/theme/${themeName}.css" id="theme">
+                <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/highlight/monokai.css">
+                <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/dist/reveal.js"></script>
+                <!-- <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/zoom/zoom.js"></script> -->
+                <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/notes/notes.js"></script>
+                <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/search/search.js"></script>
+                <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/markdown/markdown.js"></script>
+                <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/highlight/highlight.js"></script>
+            """;
+        return PROPERTY_PLACEHOLDER_HELPER.replacePlaceholders(scriptTmpl, properties);
+    }
+
 }

@@ -6,6 +6,36 @@ metadata:
 
 spec:
     forms:
+      - group: slideConfig
+        label: 幻灯片
+        formSchema:
+          - $formkit: radio
+            name: enableSlide
+            key: enableSlide
+            id: enableSlide
+            label: 是否启用幻灯片功能
+            value: false
+            help: "仅文章页面和独立页面生效"
+            options:
+              - label: 启用
+                value: true
+              - label: 禁用
+                value: false
+          - $formkit: select
+            if: $get(enableSlide).value
+            name: themeName
+            lable: 幻灯片的主题风格
+            value: "black"
+            options:
+              - label: "暗黑风格"
+                value: black
+              - label: "天空"
+                value: sky
+              - label: "纯白"
+                value: white
+              - label: "夜晚"
+                value: night
+
 
       - group: copyAdd
         label: "复制追加"

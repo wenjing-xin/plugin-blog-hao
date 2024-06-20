@@ -163,6 +163,41 @@ function extractHeight(occupied, width, height) {
             }
         }
 
+        class RevealSlide extends HTMLElement {
+            constructor() {
+                super();
+                this.options = {
+                    width: this.getAttribute("width") || "100%",
+                    height: this.getAttribute("height") || "500",
+                };
+                const slideMarkdown = getDirectEle(this, "slide-markdown");
+                let slideContent = slideMarkdown.innerHTML.trim().replace(/^(<br>)|(<br>)$/g, "");
+                this.render(slideContent);
+            }
+            render(slideContent) {
+                const realHeight = extractHeight(this.parentElement.offsetWidth, this.options.width, this.options.height);
+                this.setAttribute("height", realHeight);
+
+                this.innerHTML = `
+                        <div class="reveal" id="reveal-slide" style="width: ${this.options.width};height: ${this.options.height}px">
+                            <div class="slides">
+                                <section data-markdown>
+                                     <textarea data-template>
+                                       ## 幻燈片 1
+                                       包含一些文本和一個[鏈接](https://hakim.se)的段落。
+                                       
+                                       ---
+                                       ## 幻燈片 2
+                                       
+                                       ---
+                                       ## 幻燈片 3   
+                                     </textarea>
+                                </section>
+                            </div>
+                        </div>`;
+            }
+        }
+
         // PDF嵌入
         customElements.define("bloghao-pdf", PDFDom);
         // B站视频
@@ -171,6 +206,7 @@ function extractHeight(occupied, width, height) {
         customElements.define("bloghao-img-swipper", ImgGallery);
         // 图片轮播展示 thumb类型
         customElements.define("bloghao-img-thumb", ImgGalleryThumbs);
+        customElements.define("bloghao-slide", RevealSlide)
 
     })
 })();

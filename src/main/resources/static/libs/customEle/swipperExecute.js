@@ -54,6 +54,21 @@
                 }
             })
         }
+        if(document.querySelector("#reveal-slide")){
+            let slideView = new Reveal(document.querySelector('#reveal-slide'), {
+                embedded: true,
+                keyboardCondition: 'focused', // 只有在聚焦時才反應按鍵
+            });
+            slideView.initialize({
+                revealViewport: "reveal",
+                controls: true,
+                progress: true,
+                center: true,
+                hash: true,
+                //RevealZoom,
+                plugins: [  RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight]
+            });
+        }
     }
 
     document.addEventListener("DOMContentLoaded", () => {

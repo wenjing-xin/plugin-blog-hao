@@ -7,12 +7,11 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * InferStream采用Reactor响应式流实现多推断表达式结果存储
- *
- * @author chengzhongxue
- * @date 2023/9/3
- * @since 1.0
- */
+* 功能描述
+* InferStream采用Reactor响应式流实现多推断表达式结果存储
+* @author: dreamChaser
+* @date: 2024/6/20 18:18
+*/
 public class InferStream<T> {
     private boolean trigger = false;
     private final List<Mono<T>> monoList = new ArrayList<>();
