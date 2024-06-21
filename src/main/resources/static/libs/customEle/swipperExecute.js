@@ -54,6 +54,7 @@
                 }
             })
         }
+        // 初始化幻灯片配置
         if(document.querySelector("#reveal-slide")){
             let slideView = new Reveal(document.querySelector('#reveal-slide'), {
                 embedded: true,
@@ -66,7 +67,7 @@
                 center: true,
                 hash: true,
                 //RevealZoom,
-                plugins: [  RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight]
+                plugins: [RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight]
             });
         }
     }

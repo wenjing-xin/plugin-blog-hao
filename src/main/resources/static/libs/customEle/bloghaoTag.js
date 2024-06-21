@@ -171,7 +171,8 @@ function extractHeight(occupied, width, height) {
                     height: this.getAttribute("height") || "500",
                 };
                 const slideMarkdown = getDirectEle(this, "slide-markdown");
-                let slideContent = slideMarkdown.innerHTML.trim().replace(/^(<br>)|(<br>)$/g, "");
+                let slideContent = slideMarkdown.innerHTML.trim().replaceAll("<br>", "---");
+                console.log( slideContent);
                 this.render(slideContent);
             }
             render(slideContent) {
@@ -182,16 +183,9 @@ function extractHeight(occupied, width, height) {
                         <div class="reveal" id="reveal-slide" style="width: ${this.options.width};height: ${this.options.height}px">
                             <div class="slides">
                                 <section data-markdown>
-                                     <textarea data-template>
-                                       ## 幻燈片 1
-                                       包含一些文本和一個[鏈接](https://hakim.se)的段落。
-                                       
-                                       ---
-                                       ## 幻燈片 2
-                                       
-                                       ---
-                                       ## 幻燈片 3   
-                                     </textarea>
+                                    <textarea data-template>
+                                       ${slideContent}
+                                    </textarea>
                                 </section>
                             </div>
                         </div>`;

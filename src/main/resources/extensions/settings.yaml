@@ -24,7 +24,7 @@ spec:
           - $formkit: select
             if: $get(enableSlide).value
             name: themeName
-            lable: 幻灯片的主题风格
+            label: 幻灯片的主题风格
             value: "black"
             options:
               - label: "暗黑风格"
@@ -35,6 +35,28 @@ spec:
                 value: white
               - label: "夜晚"
                 value: night
+              - label: "白色对比度（逐字标题）"
+                value: white_contrast_compact_verbatim_headers
+              - label: "简约"
+                value: simple
+              - label: "血之霓裳"
+                value: blood
+              - label: "月球"
+                value: moon
+              - label: "德古拉"
+                value: dracula
+              - label: "beige"
+                value: beige
+              - label: "black-contrast"
+                value: black-contrast
+              - label: "灰白质感"
+                value: league
+              - label: "serif"
+                value: serif
+              - label: "solarized"
+                value: solarized
+              - label: "白色对比度"
+                value: white-contrast
 
 
       - group: copyAdd
