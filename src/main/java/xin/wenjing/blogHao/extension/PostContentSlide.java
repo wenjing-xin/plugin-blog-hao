@@ -1,6 +1,5 @@
 package xin.wenjing.blogHao.extension;
 
-import jakarta.annotation.Resource;
 import reactor.core.publisher.Mono;
 import run.halo.app.theme.ReactivePostContentHandler;
 
@@ -10,6 +9,7 @@ import run.halo.app.theme.ReactivePostContentHandler;
  * @author: dreamChaser
  * @date: 2024年06月18日 20:50
  */
+
 public class PostContentSlide implements ReactivePostContentHandler {
 
 

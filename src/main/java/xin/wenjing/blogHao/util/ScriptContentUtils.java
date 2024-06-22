@@ -133,8 +133,6 @@ public class ScriptContentUtils {
 
         final Properties properties = new Properties();
         properties.setProperty("version", version);
-        //  <link rel="stylesheet" type="text/css" href="https://unpkg.com/webppt@1.0.11/dist/style.css" />
-        //  <script src="https://unpkg.com/webppt@1.0.11/dist/index.min.js"></script>
         final String scriptTmpl = """
             <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css">
             <script data-pjax src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
