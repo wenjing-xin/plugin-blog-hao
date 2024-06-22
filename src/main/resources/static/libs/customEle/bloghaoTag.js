@@ -83,83 +83,62 @@ function extractHeight(occupied, width, height) {
                 let _innerHTML = _imgs.innerHTML.trim().replace(/^(<br>)|(<br>)$/g, "");
                 let contents = "";
                 let configOptions = this.options;
+                let isThumbsSwiper = false;
+                let swiperIdName = "";
+                switch (this.options.type) {
+                    case "slides":
+                        swiperIdName = "bloghao-img-slide";
+                        break;
+                    case "coverflow":
+                        swiperIdName = "bloghao-img-coverflow";
+                        break;
+                    case "card":
+                        swiperIdName = "bloghao-img-card";
+                        break;
+                    case "thumbs":
+                        swiperIdName = "bloghao-img-thumb";
+                        isThumbsSwiper = true;
+                        break;
+                    default:
+                        swiperIdName = "bloghao-img-normal";
+                }
                 _innerHTML.replace(
                         /{([^}]*)}/g,
                         function ($0, $1) {
                             var str = $1.split(",");
                             str.forEach((item) => {
-                                contents += `
-								<div class="swiper-slide">
-									<img style="height: ${configOptions.height}px;" src="${item}" alt="image" />
-								</div>
-							`;
+                                if(isThumbsSwiper){
+                                    contents += `<div class="swiper-slide">
+                                                    <img style="height: ${configOptions.height}px; width: 92%;" src="${item}" alt="image" />
+                                                </div>`;
+                                }else{
+                                    contents += `<div class="swiper-slide">
+                                                    <img style="height: ${configOptions.height}px;" src="${item}" alt="image" />
+                                                </div>`;
+                                }
+
                             });
                         }
                 );
-                let swipperIdName = "";
-                switch (this.options.type){
-                    case "slides":
-                        swipperIdName = "bloghao-img-slide";
-                        break;
-                    case "coverflow":
-                        swipperIdName = "bloghao-img-coverflow";
-                        break;
-                    case "card":
-                        swipperIdName = "bloghao-img-card";
-                        break;
-                    case "thumbs":
-                        swipperIdName = "bloghao-img-thumbs";
-                        break;
-                    default:
-                        swipperIdName = "bloghao-img-normal";
-                }
 
-                let htmlStr = `<div class="swiper" id="${swipperIdName}" style="width:${this.options.width};">
+                let _tmpl = `<div class="swiper" id="${swiperIdName}" style="width:${this.options.width};">
                                     <div class="swiper-wrapper">
                                         ${contents}
                                     </div>
                                </div>`;
-                this.innerHTML = htmlStr;
-            }
-        }
-
-        class ImgGalleryThumbs extends HTMLElement {
-            constructor() {
-                super();
-                this.options = {
-                    width: this.getAttribute("width") || "92%",
-                    height: this.getAttribute("height") || 350,
-                    type: this.getAttribute("type") || "normal",
-                };
-                const _imgs = getDirectEle(this, "_img");
-                let _innerHTML = _imgs.innerHTML.trim().replace(/^(<br>)|(<br>)$/g, "");
-                let contents = "";
-                let configOptions = this.options;
-                _innerHTML.replace(
-                        /{([^}]*)}/g,
-                        function ($0, $1) {
-                            var str = $1.split(",");
-                            str.forEach((item) => {
-                                contents += `
-								<div class="swiper-slide">
-									<img style="height: ${configOptions.height}px;width: 100%" src="${item}" alt="image" />
-								</div>
-							`;
-                            });
-                        }
-                );
-
-                let htmlStr = `<div class="swiper" id="bloghao-img-thumb" style="width:${this.options.width};">
+                if (isThumbsSwiper) {
+                    _tmpl = `<div class="swiper" id="${swiperIdName}" style="width:${this.options.width};">
                                     <div class="swiper-wrapper">
                                         ${contents}
                                     </div>
-                                </div>
-                                <div class="swiper" id="gallery-thumbs">
-                                    <div class="swiper-wrapper">
-                                        ${contents}
-                                    </div>
-                                </div>`;
-                this.innerHTML = htmlStr;
+                             </div>
+                             <div class="swiper" id="gallery-thumbs">
+                                 <div class="swiper-wrapper">
+                                    ${contents}
+                                 </div>
+                             </div>`;
+                }
+                this.innerHTML = _tmpl;
             }
         }
 
@@ -172,7 +151,6 @@ function extractHeight(occupied, width, height) {
                 };
                 const slideMarkdown = getDirectEle(this, "slide-markdown");
                 let slideContent = slideMarkdown.innerHTML.trim().replaceAll("<br>", "---");
-                console.log( slideContent);
                 this.render(slideContent);
             }
             render(slideContent) {
@@ -197,9 +175,8 @@ function extractHeight(occupied, width, height) {
         // B站视频
         customElements.define("bloghao-bili", BiliDom);
         // 图片走马灯嵌入
-        customElements.define("bloghao-img-swipper", ImgGallery);
-        // 图片轮播展示 thumb类型
-        customElements.define("bloghao-img-thumb", ImgGalleryThumbs);
+        customElements.define("bloghao-img-swiper", ImgGallery);
+
         customElements.define("bloghao-slide", RevealSlide)
 
     })
