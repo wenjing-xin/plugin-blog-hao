@@ -1,141 +1,128 @@
 import {
-  type Editor,
-  type ExtendedRegExpMatchArray,
-  mergeAttributes,
   Node,
-  nodeInputRule,
-  nodePasteRule,
-  type Range,
   VueNodeViewRenderer,
+  mergeAttributes,
+  nodeInputRule,
+  type Editor,
+  ToolboxItem,
+  type Range,
 } from "@halo-dev/richtext-editor";
 import BlogHaoSlideView from "./BlogHaoSlideView.vue";
-import IconParkSolidSlideTwo from '~icons/icon-park-solid/slide-two';
-import { ToolboxItem } from "@halo-dev/richtext-editor";
 import { markRaw } from "vue";
-declare module "@halo-dev/richtext-editor" {
-  interface Commands<ReturnType> {
-    blogHaoSlide: {
-      setBlogHaoSlide: (options: { src: string }) => ReturnType;
-    };
-  }
-}
+import IconParkSolidSlideTwo from '~icons/icon-park-solid/slide-two';
 
-const BlogHaoSlide = Node.create({
+const BlogHaoSlideExtension = Node.create({
   name: "blogHaoSlide",
-  code: true,
-  inline() {
-    return true;
-  },
-  group() {
-    return "inline";
-  },
-  parseHTML() {
-    return [
-      {
-        tag: "blogHaoSlide",
-      },
-    ];
-  },
-  renderHTML({ HTMLAttributes }) {
-    return ["blogHaoSlide", mergeAttributes(HTMLAttributes)];
-  },
+  group: 'block',
 
-  addCommands() {
-    return {
-      setBlogHaoSlide:
-        (options) =>
-          ({ commands }) => {
-            return commands.insertContent({
-              type: this.name,
-              attrs: options,
-            });
-          },
-    };
-  },
-  addInputRules() {
-    return [
-      nodeInputRule({
-        find: /^\$blogHaoSlide\$$/,
-        type: this.type,
-        getAttributes: () => {
-          return { width: "100%" };
-        },
-      }),
-    ];
-  },
-  addPasteRules() {
-    return [
-      nodePasteRule({
-        find: /^\$blogHaoSlide\$$/,
-        type: this.type,
-        getAttributes: (match: ExtendedRegExpMatchArray) => {
-          return {
-            content: match[2],
-          };
-        },
-      }),
-    ];
-  },
-  addNodeView() {
-    return VueNodeViewRenderer(BlogHaoSlideView);
-  },
   addOptions() {
+
     return {
+      ...this.parent?.(),
+      getToolboxItems({ editor }: { editor: Editor }) {
+        return [
+          {
+            priority: 99,
+            component: markRaw(ToolboxItem),
+            props: {
+              editor,
+              icon: markRaw(IconParkSolidSlideTwo),
+              title: "幻灯片",
+              action: () => {
+
+                editor
+                  .chain()
+                  .focus()
+                  .insertContent([{ type: "blogHaoSlide" }])
+                  .run();
+              },
+            },
+          },
+        ];
+      },
       getCommandMenuItems() {
         return {
-          priority: 2e2,
+          priority: 200,
           icon: markRaw(IconParkSolidSlideTwo),
-          title: "幻灯片展示",
-          keywords: ["blogHaoSlide", "幻灯片展示"],
+          title: "幻灯片",
+          keywords: ["slide", "revealjs"],
           command: ({ editor, range }: { editor: Editor; range: Range }) => {
             editor
               .chain()
               .focus()
               .deleteRange(range)
-              .insertContent([
-                { type: "blogHaoSlide", attrs: { src: "" } },
-                { type: "paragraph", content: "" },
-              ])
+              .insertContent([{ type: "blogHaoSlide" }])
               .run();
-          },
-        };
-      },
-      getToolboxItems({ editor }: { editor: Editor }) {
-        return {
-          priority: 59,
-          component: markRaw(ToolboxItem),
-          props: {
-            editor,
-            icon: markRaw(IconParkSolidSlideTwo),
-            title: "幻灯片展示",
-            action: () => {
-              editor
-                .chain()
-                .focus()
-                .insertContent([{ type: "blogHaoSlide" }])
-                .run();
-            },
           },
         };
       },
       getDraggable() {
         return {
-          getRenderContainer({ dom }: { dom: HTMLElement }) {
+          getRenderContainer({ dom, view }) {
+            console.log(dom);
+            console.log(view);
             let container = dom;
-            while (
-              container &&
-              !container.hasAttribute("data-node-view-wrapper")
-            ) {
+            while (container && container.tagName !== "P") {
               container = container.parentElement as HTMLElement;
             }
+            if (container) {
+              container = container.firstElementChild
+                ?.firstElementChild as HTMLElement;
+            }
+            let node;
+            if (container.firstElementChild) {
+              const pos = view.posAtDOM(container.firstElementChild, 0);
+              const $pos = view.state.doc.resolve(pos);
+              node = $pos.node();
+            }
+
             return {
-              el: container,
+              node: node,
+              el: container as HTMLElement,
             };
           },
           allowPropagationDownward: true,
         };
       },
-    }
-  }
-})
-export default BlogHaoSlide;
+    };
+  },
+
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      src: {
+        default: null,
+        parseHTML: (element) => {
+          return element.getAttribute("src");
+        },
+      },
+    };
+  },
+  parseHTML() {
+    return [{
+      tag: 'bloghao-slide',
+    }]
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['bloghao-slide', mergeAttributes(HTMLAttributes)]
+  },
+
+  addNodeView() {
+    return VueNodeViewRenderer(BlogHaoSlideView);
+
+  },
+  addInputRules() {
+    return [
+      nodeInputRule({
+        find: /^\$bloghao-slide\$$/,
+        type: this.type,
+        getAttributes: () => {
+          return { width: "100%", minHeight: "500px" };
+        },
+      }),
+    ];
+  },
+
+});
+export default BlogHaoSlideExtension;
