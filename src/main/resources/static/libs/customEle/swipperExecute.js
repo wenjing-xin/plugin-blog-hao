@@ -69,15 +69,50 @@
                 embedded: true,
                 keyboardCondition: 'focused',
             });
-            slideView.initialize({
-                revealViewport: "reveal",
-                controls: true,
-                progress: true,
-                center: true,
-                hash: true,
-                //RevealZoom,
-                plugins: [RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight]
-            });
+            let slidePluginList = [];
+            fetch("/apis/blogHao.wenjing.xin/v1alpha1/blogHaoConfig/slide-config", { method: "GET"})
+                    .then( res => res.json())
+                    .then( data => {
+                        data.slidePlugin.enablePlugin.forEach( pluginItem => {
+                            switch (pluginItem.pluginName){
+                                case "RevealMarkdown":
+                                    slidePluginList.push(RevealMarkdown);
+                                    break;
+                                case "RevealHighlight":
+                                    slidePluginList.push(RevealHighlight);
+                                    break;
+                                case "RevealMath.KaTeX":
+                                    slidePluginList.push(RevealMath.KaTeX);
+                                    break;
+                                case "RevealSearch":
+                                    slidePluginList.push(RevealSearch);
+                                    break;
+                                case "RevealNotes":
+                                    slidePluginList.push(RevealNotes);
+                                    break;
+                                case "RevealZoom":
+                                    slidePluginList.push(RevealZoom);
+                                    break;
+                            }
+                        })
+                        slideView.initialize({
+                            revealViewport: "reveal",
+                            controls: true,
+                            progress: true,
+                            center: true,
+                            hash: true,
+                            plugins: slidePluginList
+                        });
+                    }).catch( error =>{
+                        slideView.initialize({
+                            revealViewport: "reveal",
+                            controls: true,
+                            progress: true,
+                            center: true,
+                            hash: true,
+                            plugins: slidePluginList
+                        });
+                    });
         }
     }
 

@@ -1,0 +1,15 @@
+apiVersion: v1alpha1
+kind: Role
+metadata:
+  name: role-template-blog-hao
+  labels:
+    halo.run/role-template: "true"
+    #将配置查看的权限给所有用户
+    rbac.authorization.halo.run/aggregate-to-anonymous: "true"
+  annotations:
+    rbac.authorization.halo.run/module: "BlogHao View"
+    rbac.authorization.halo.run/display-name: "配置查看"
+rules:
+  - apiGroups: [ "blogHao.wenjing.xin" ]
+    resources: [ "blogHaoConfig" ]
+    verbs: [ "get", "list"]

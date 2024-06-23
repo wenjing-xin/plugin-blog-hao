@@ -73,12 +73,14 @@ function extractHeight(occupied, width, height) {
 
         class ImgGallery extends HTMLElement {
             constructor() {
+
                 super();
                 this.options = {
                     width: this.getAttribute("width") || "98%",
                     height: this.getAttribute("height") || 300,
                     type: this.getAttribute("type") || "normal",
                 };
+
                 const _imgs = getDirectEle(this, "_img");
                 let _innerHTML = _imgs.innerHTML.trim().replace(/^(<br>)|(<br>)$/g, "");
                 let contents = "";
@@ -125,7 +127,7 @@ function extractHeight(occupied, width, height) {
                                     <div class="swiper-wrapper">
                                         ${contents}
                                     </div>
-                               </div>`;
+                             </div>`;
                 if (isThumbsSwiper) {
                     _tmpl = `<div class="swiper" id="${swiperIdName}" style="width:${this.options.width};">
                                     <div class="swiper-wrapper">
@@ -142,31 +144,46 @@ function extractHeight(occupied, width, height) {
             }
         }
 
+        /**
+         * 幻灯片
+         */
         class RevealSlide extends HTMLElement {
             constructor() {
                 super();
                 this.options = {
                     width: this.getAttribute("width") || "100%",
                     height: this.getAttribute("height") || "500",
+                    render: this.getAttribute("render") || "md"
                 };
-                const slideMarkdown = getDirectEle(this, "slide-markdown");
-                let slideContent = slideMarkdown.innerHTML.trim().replaceAll("<br>", "---");
+                let slideContent = getDirectEle(this, "slide-content");
+                if(this.options.render == "md"){
+                    slideContent = slideContent.innerHTML.trim().replaceAll("<br>", "---");
+                }
                 this.render(slideContent);
             }
             render(slideContent) {
                 const realHeight = extractHeight(this.parentElement.offsetWidth, this.options.width, this.options.height);
                 this.setAttribute("height", realHeight);
-
-                this.innerHTML = `
-                        <div class="reveal" id="reveal-slide" style="width: ${this.options.width};height: ${this.options.height}px">
-                            <div class="slides">
-                                <section data-markdown>
-                                    <textarea data-template>
-                                       ${slideContent}
-                                    </textarea>
-                                </section>
-                            </div>
-                        </div>`;
+                let renderTmpl = "";
+                if(this.options.render == "md"){
+                    renderTmpl = ` 
+                                <div class="reveal" id="reveal-slide" style="width: ${this.options.width};height: ${this.options.height}px">
+                                    <div class="slides">
+                                        <section data-markdown>
+                                            <textarea data-template>
+                                               ${slideContent}
+                                            </textarea>
+                                        </section>
+                                    </div>
+                                </div>`;
+                }else{
+                    renderTmpl =  `<div class="reveal" id="reveal-slide" style="width: ${this.options.width};height: ${this.options.height}px">
+                                        <div class="slides">
+                                            ${slideContent}
+                                        </div>
+                                   </div>`;
+                }
+                this.innerHTML = renderTmpl;
             }
         }
 

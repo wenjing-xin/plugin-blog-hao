@@ -1,8 +1,6 @@
 package xin.wenjing.blogHao.processor;
 
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IModel;
@@ -42,6 +40,6 @@ public class SlideProcessor implements TemplateHeadProcessor {
         }
         String theme = slideConfig.getThemeName();
         final IModelFactory modelFactory = context.getModelFactory();
-        return Mono.just(modelFactory.createText(ScriptContentUtils.slideScript(theme))).doOnNext(model::add).then();
+        return Mono.just(modelFactory.createText(ScriptContentUtils.slideScript(slideConfig))).doOnNext(model::add).then();
     }
 }

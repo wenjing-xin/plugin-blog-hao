@@ -3,6 +3,7 @@ package xin.wenjing.blogHao.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * 功能描述
@@ -21,6 +22,7 @@ public class Settings {
         public final static String GROUP_NAME = "slideConfig";
         private boolean enableSlide;
         private String themeName;
+        private SlidePlugin slidePlugin;
     }
 
     /**
@@ -75,6 +77,24 @@ public class Settings {
         private boolean enableColorless;
         private boolean colorlessScope;
         private LocalDate selfCloseAt;
+    }
+
+    /**
+     * 幻灯片配置的子内容
+     * 用于插件配置
+     */
+    @Data
+    public static class SlidePlugin{
+        private List<EnablePlugin> enablePlugin;
+    }
+
+    /**
+     * 幻灯片配置的子内容
+     * 用于插件配置的数据模型
+     */
+    @Data
+    public static class EnablePlugin{
+        private String pluginName;
     }
 
 }

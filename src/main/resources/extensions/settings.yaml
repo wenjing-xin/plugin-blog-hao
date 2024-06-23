@@ -57,6 +57,38 @@ spec:
                 value: solarized
               - label: "白色对比度"
                 value: white-contrast
+          - $formkit: group
+            name: slidePlugin
+            label: 插件
+            value:
+              enablePlugin:
+                - pluginName: "RevealMarkdown"
+                - pluginName: "RevealHighlight"
+            children:
+              - $formkit: repeater
+                name: enablePlugin
+                id: enablePlugin
+                label: 启用的插件
+                help: "如果为选择使用该插件，则不会出现对应的效果"
+                children:
+                  - $formkit: select
+                    name: pluginName
+                    id: pluginName
+                    key: pluginName
+                    label: "插件列表"
+                    options:
+                      - value: "RevealMarkdown"
+                        label: Markdown编辑幻灯片
+                      - value: "RevealHighlight"
+                        label: 代码语法高亮
+                      - value: "RevealMath.KaTeX"
+                        label: 呈现数学方程式
+                      - value: "RevealSearch"
+                        label: CTRL+Shift+F 搜索幻燈片內容
+                      - value: "RevealNotes"
+                        label: 单独视窗中显示演讲者视图
+                      - value: "RevealZoom"
+                        label: Alt + 点击元素放大
 
 
       - group: copyAdd

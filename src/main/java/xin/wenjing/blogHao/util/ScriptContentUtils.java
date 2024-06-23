@@ -1,9 +1,9 @@
 package xin.wenjing.blogHao.util;
 
-import org.pf4j.PluginWrapper;
 import org.springframework.util.PropertyPlaceholderHelper;
 import org.thymeleaf.context.ITemplateContext;
 import xin.wenjing.blogHao.entity.Settings;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -134,31 +134,84 @@ public class ScriptContentUtils {
         final Properties properties = new Properties();
         properties.setProperty("version", version);
         final String scriptTmpl = """
-            <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css">
-            <script data-pjax src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+            <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/swiper@8/swiper-bundle.min.css">
+            <script data-pjax src="/plugins/plugin-blog-hao/assets/static/libs/swiper@8/swiper-bundle.min.js"></script>
             <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/customEle/customEle.css?version=${version}" />
             <script data-pjax src="/plugins/plugin-blog-hao/assets/static/libs/customEle/bloghaoTag.js?version=${version}"></script>
-            <script data-pjax src="/plugins/plugin-blog-hao/assets/static/libs/customEle/swipperExecute.js?version=${version}"></script>
+            <script data-pjax type="text/javascript" src="/plugins/plugin-blog-hao/assets/static/libs/customEle/swipperExecute.js?version=${version}"></script>
             """;
         return PROPERTY_PLACEHOLDER_HELPER.replacePlaceholders(scriptTmpl, properties);
     }
 
-    public static String slideScript(String theme){
+    /**
+     * 幻灯片渲染
+     * @param slideConfig 幻灯片配置
+     * @return
+     */
+    public static String slideScript(Settings.SlideConfig slideConfig){
+
         final Properties properties = new Properties();
-        properties.setProperty("themeName", theme);
+        properties.setProperty("themeName", slideConfig.getThemeName());
         final String scriptTmpl = """
                 <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/revealjs/dist/reset.css" />
                 <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/revealjs/dist/reveal.css" />
                 <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/revealjs/dist/theme/${themeName}.css" id="theme">
-                <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/highlight/monokai.css">
                 <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/dist/reveal.js"></script>
-                <!-- <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/zoom/zoom.js"></script> -->
-                <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/notes/notes.js"></script>
-                <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/search/search.js"></script>
-                <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/markdown/markdown.js"></script>
-                <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/highlight/highlight.js"></script>
-            """;
-        return PROPERTY_PLACEHOLDER_HELPER.replacePlaceholders(scriptTmpl, properties);
+          """;
+
+        String pluginTmpl = ebableSlidePlugin(slideConfig);
+        return PROPERTY_PLACEHOLDER_HELPER.replacePlaceholders(scriptTmpl + pluginTmpl, properties);
+    }
+
+    /**
+     * 幻灯片插件加载
+     * @param slideConfig
+     * @return
+     */
+    public static String ebableSlidePlugin(Settings.SlideConfig slideConfig){
+
+        List<Settings.EnablePlugin> slidePluginList = slideConfig.getSlidePlugin().getEnablePlugin();
+        StringBuilder injectPluginScript = new StringBuilder();
+
+        for(int i = 0; i < slidePluginList.size(); i++){
+            Settings.EnablePlugin enablePlugin = slidePluginList.get(i);
+            switch (enablePlugin.getPluginName()){
+                case "RevealMarkdown":
+                    injectPluginScript.append("""
+                        <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/markdown/markdown.js" defer></script>
+                        """);
+                    break;
+                case "RevealHighlight":
+                    injectPluginScript.append("""
+                        <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/highlight/monokai.css">
+                        <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/highlight/highlight.js" defer></script>
+                        """);
+                    break;
+                case "RevealMath.KaTeX":
+                    injectPluginScript.append("""
+                        <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/math/math.js" defer></script>
+                        """);
+                    break;
+                case "RevealSearch":
+                    injectPluginScript.append("""
+                        <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/search/search.js" defer></script>
+                        """);
+                    break;
+                case "RevealNotes":
+                    injectPluginScript.append("""
+                        <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/notes/notes.js"></script>
+                        """);
+                    break;
+                case "RevealZoom":
+                    injectPluginScript.append("""
+                        <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/zoom/zoom.js" defer></script>
+                        """);
+                    break;
+                default:
+
+            }
+        }
+        return injectPluginScript.toString();
     }
 
 }
