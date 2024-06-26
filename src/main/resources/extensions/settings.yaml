@@ -45,7 +45,7 @@ spec:
                 value: moon
               - label: "德古拉"
                 value: dracula
-              - label: "beige"
+              - label: "米色"
                 value: beige
               - label: "black-contrast"
                 value: black-contrast
@@ -53,7 +53,7 @@ spec:
                 value: league
               - label: "serif"
                 value: serif
-              - label: "solarized"
+              - label: "浅黄曝光风"
                 value: solarized
               - label: "白色对比度"
                 value: white-contrast
@@ -89,6 +89,61 @@ spec:
                         label: 单独视窗中显示演讲者视图
                       - value: "RevealZoom"
                         label: Alt + 点击元素放大
+          - $formkit: group
+            name: individualization
+            label: 个性化配置
+            value:
+              mouseWheel: false
+              loop: false
+              scrollView: false
+              scrollProgress: auto
+            children:
+              - $formkit: radio
+                name: mouseWheel
+                key: mouseWheel
+                id: mouseWheel
+                label: "启用鼠标滚轮进行幻灯片预览"
+                value: false
+                options:
+                  - label: 启用
+                    value: true
+                  - label: 禁用
+                    value: false
+              - $formkit: radio
+                name: loop
+                key: loop
+                id: loop
+                label: "是否自动循环播放幻灯片"
+                value: false
+                options:
+                  - label: 启用
+                    value: true
+                  - label: 禁用
+                    value: false
+              - $formkit: radio
+                name: scrollView
+                key: scrollView
+                id: scrollView
+                label: "滚动视图"
+                value: false
+                options:
+                  - label: 启用
+                    value: true
+                  - label: 禁用
+                    value: false
+              - $formkit: select
+                if: $get(scrollView).value
+                name: scrollProgress
+                label: "滚动条类型"
+                value: auto
+                help: "复制文本与附加内容的分离方式"
+                options:
+                  - label: "滚动显示 闲置隐藏"
+                    value: auto
+                  - label: "始终显示"
+                    value: true
+                  - label: "始终隐藏"
+                    value: false
 
 
       - group: copyAdd

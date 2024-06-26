@@ -67,51 +67,54 @@
         if(document.querySelector("#reveal-slide")){
             let slideView = new Reveal(document.querySelector('#reveal-slide'), {
                 embedded: true,
-                keyboardCondition: 'focused',
+                keyboardCondition: 'focused'
             });
-            let slidePluginList = [];
+            let initializeOptions = {
+                revealViewport: "reveal",
+                controls: true,
+                progress: true,
+                center: true,
+                hash: true,
+                plugins: []
+            }
             fetch("/apis/blogHao.wenjing.xin/v1alpha1/blogHaoConfig/slide-config", { method: "GET"})
                     .then( res => res.json())
                     .then( data => {
+                        Object.assign(initializeOptions, {mouseWheel: data.individualization.mouseWheel })
+                        Object.assign(initializeOptions, {loop: data.individualization.loop })
+                        if(data.individualization.scrollView){
+                            Object.assign(initializeOptions, {view: "scroll" });
+                            let scrollProgressVal = data.individualization.scrollProgress == "auto" ? "auto" : Boolean.valueOf(data.individualization.scrollProgress);
+                            Object.assign(initializeOptions, {scrollProgress: scrollProgressVal });
+                        }
+
+                        // 获取插件列表
                         data.slidePlugin.enablePlugin.forEach( pluginItem => {
                             switch (pluginItem.pluginName){
                                 case "RevealMarkdown":
-                                    slidePluginList.push(RevealMarkdown);
+                                    initializeOptions.plugins.push(RevealMarkdown);
                                     break;
                                 case "RevealHighlight":
-                                    slidePluginList.push(RevealHighlight);
+                                    initializeOptions.plugins.push(RevealHighlight);
                                     break;
                                 case "RevealMath.KaTeX":
-                                    slidePluginList.push(RevealMath.KaTeX);
+                                    initializeOptions.plugins.push(RevealMath.KaTeX);
                                     break;
                                 case "RevealSearch":
-                                    slidePluginList.push(RevealSearch);
+                                    initializeOptions.plugins.push(RevealSearch);
                                     break;
                                 case "RevealNotes":
-                                    slidePluginList.push(RevealNotes);
+                                    initializeOptions.plugins.push(RevealNotes);
                                     break;
                                 case "RevealZoom":
-                                    slidePluginList.push(RevealZoom);
+                                    initializeOptions.plugins.push(RevealZoom);
                                     break;
                             }
                         })
-                        slideView.initialize({
-                            revealViewport: "reveal",
-                            controls: true,
-                            progress: true,
-                            center: true,
-                            hash: true,
-                            plugins: slidePluginList
-                        });
+                        // 初始化幻灯片配置
+                        slideView.initialize(initializeOptions);
                     }).catch( error =>{
-                        slideView.initialize({
-                            revealViewport: "reveal",
-                            controls: true,
-                            progress: true,
-                            center: true,
-                            hash: true,
-                            plugins: slidePluginList
-                        });
+                        slideView.initialize(initializeOptions);
                     });
         }
     }

@@ -23,6 +23,7 @@ public class Settings {
         private boolean enableSlide;
         private String themeName;
         private SlidePlugin slidePlugin;
+        private Individualization individualization;
     }
 
     /**
@@ -95,6 +96,18 @@ public class Settings {
     @Data
     public static class EnablePlugin{
         private String pluginName;
+    }
+
+    /**
+     * 幻灯片配置的子内容
+     * 用于个性化配置的选项
+     */
+    @Data
+    public static class Individualization{
+        private boolean mouseWheel;
+        private boolean loop;
+        private boolean scrollView;
+        private String scrollProgress;
     }
 
 }
