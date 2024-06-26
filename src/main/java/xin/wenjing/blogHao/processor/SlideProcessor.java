@@ -38,7 +38,6 @@ public class SlideProcessor implements TemplateHeadProcessor {
         if(singlePageOrPost){
             return Mono.empty();
         }
-        String theme = slideConfig.getThemeName();
         final IModelFactory modelFactory = context.getModelFactory();
         return Mono.just(modelFactory.createText(ScriptContentUtils.slideScript(slideConfig))).doOnNext(model::add).then();
     }

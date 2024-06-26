@@ -135,10 +135,10 @@ public class ScriptContentUtils {
         properties.setProperty("version", version);
         final String scriptTmpl = """
             <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/swiper@8/swiper-bundle.min.css">
-            <script data-pjax src="/plugins/plugin-blog-hao/assets/static/libs/swiper@8/swiper-bundle.min.js"></script>
-            <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/customEle/customEle.css?version=${version}" />
-            <script data-pjax src="/plugins/plugin-blog-hao/assets/static/libs/customEle/bloghaoTag.js?version=${version}"></script>
-            <script data-pjax type="text/javascript" src="/plugins/plugin-blog-hao/assets/static/libs/customEle/swipperExecute.js?version=${version}"></script>
+            <script data-pjax src="/plugins/plugin-blog-hao/assets/static/libs/swiper@8/swiper-bundle.min.js" type="text/javascript"></script>
+            <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/custom/customEle.css?version=${version}" />
+            <script data-pjax src="/plugins/plugin-blog-hao/assets/static/custom/bloghaoTag.js?version=${version}" type="text/javascript"></script>
+            <script data-pjax src="/plugins/plugin-blog-hao/assets/static/custom/swipperExecute.js?version=${version}" type="text/javascript"></script>
             """;
         return PROPERTY_PLACEHOLDER_HELPER.replacePlaceholders(scriptTmpl, properties);
     }

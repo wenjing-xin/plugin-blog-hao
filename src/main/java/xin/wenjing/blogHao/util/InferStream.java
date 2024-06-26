@@ -85,7 +85,7 @@ public class InferStream<T> {
         }
 
         public Mono<T> get(int index) {
-            if (monoList.isEmpty()) return Mono.empty();
+            if (monoList.isEmpty()) {return Mono.empty();}
             return monoList.get(index);
         }
     }
