@@ -33,6 +33,7 @@
                             mousewheel: true,
                             effect: 'cards'
                         })
+                        console.log("cardzhixing",999)
                         break;
                     case "thumbs":
                         console.log("thumbs")

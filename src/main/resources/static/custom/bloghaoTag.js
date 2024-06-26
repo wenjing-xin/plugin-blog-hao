@@ -35,6 +35,7 @@ function extractHeight(occupied, width, height) {
                 super();
                 this.options = {
                     src: this.getAttribute("src") || "",
+                    page: +(this.getAttribute("page") || "1"),
                     width: this.getAttribute("width") || "100%",
                     height: this.getAttribute("height") || "800",
                 };
@@ -56,9 +57,8 @@ function extractHeight(occupied, width, height) {
                 super();
                 this.options = {
                     bvid: this.getAttribute("bvid"),
-                    page: +(this.getAttribute("page") || "1"),
                     width: this.getAttribute("width") || "100%",
-                    height: this.getAttribute("height") || "500",
+                    height: this.getAttribute("height") || "500"
                 };
                 this.render();
             }
@@ -67,7 +67,11 @@ function extractHeight(occupied, width, height) {
                 const realHeight = extractHeight(this.parentElement.offsetWidth, this.options.width, this.options.height);
                 this.setAttribute("height", realHeight);
                 this.innerHTML = `
-                        <iframe class="bilibili-iframe-dom" allowfullscreen="true" scrolling="no" border="0" frameborder="no" framespacing="0" class="tool_vplayer" src="//player.bilibili.com/player.html?bvid=${this.options.bvid}&page=${this.options.page}" style="width:${this.options.width}; height:${realHeight}px;"></iframe>`;
+                        <iframe class="bilibili-iframe-dom" allowfullscreen="true" 
+                        sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts" 
+                        scrolling="no" border="0" frameborder="no" framespacing="0" class="tool_vplayer" 
+                        src="https://player.bilibili.com/player.html?autoplay=0&high_quality=1&bvid=${this.options.bvid}" 
+                        style="width:${this.options.width}; height:${realHeight}px;"></iframe>`;
             }
         }
 
