@@ -111,7 +111,7 @@ function extractHeight(occupied, width, height) {
                             str.forEach((item) => {
                                 if(isThumbsSwiper){
                                     contents += `<div class="swiper-slide">
-                                                    <img style="height: ${configOptions.height}px; width: 92%;" src="${item}" alt="image" />
+                                                    <img style="height: ${configOptions.height}px; width: ${configOptions.width};" src="${item}" alt="image" />
                                                 </div>`;
                                 }else{
                                     contents += `<div class="swiper-slide">
@@ -129,12 +129,12 @@ function extractHeight(occupied, width, height) {
                                     </div>
                              </div>`;
                 if (isThumbsSwiper) {
-                    _tmpl = `<div class="swiper" id="${swiperIdName}" style="width:${this.options.width};">
+                    _tmpl = `<div class="swiper" id="${swiperIdName}" style="width:${this.options.width};text-align: center">
                                     <div class="swiper-wrapper">
                                         ${contents}
                                     </div>
                              </div>
-                             <div class="swiper" id="gallery-thumbs">
+                             <div class="swiper" id="gallery-thumbs" style="width:${this.options.width};">
                                  <div class="swiper-wrapper">
                                     ${contents}
                                  </div>
@@ -193,8 +193,9 @@ function extractHeight(occupied, width, height) {
         customElements.define("bloghao-bili", BiliDom);
         // 图片走马灯嵌入
         customElements.define("bloghao-img-swiper", ImgGallery);
-
+        // 幻灯片标签
         customElements.define("bloghao-slide", RevealSlide)
 
     })
+
 })();

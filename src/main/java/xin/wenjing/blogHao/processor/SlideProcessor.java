@@ -1,6 +1,7 @@
 package xin.wenjing.blogHao.processor;
 
 import lombok.AllArgsConstructor;
+import org.pf4j.PluginWrapper;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IModel;
@@ -24,6 +25,8 @@ public class SlideProcessor implements TemplateHeadProcessor {
 
     private final SettingFetcher settingFetcher;
 
+    private final PluginWrapper pluginWrapper;
+
     @Override
     public Mono<Void> process(ITemplateContext context, IModel model, IElementModelStructureHandler structureHandler) {
 
@@ -39,6 +42,6 @@ public class SlideProcessor implements TemplateHeadProcessor {
             return Mono.empty();
         }
         final IModelFactory modelFactory = context.getModelFactory();
-        return Mono.just(modelFactory.createText(ScriptContentUtils.slideScript(slideConfig))).doOnNext(model::add).then();
+        return Mono.just(modelFactory.createText(ScriptContentUtils.slideScript(slideConfig, pluginWrapper.getDescriptor().getVersion()))).doOnNext(model::add).then();
     }
 }

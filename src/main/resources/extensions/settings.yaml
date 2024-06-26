@@ -58,6 +58,7 @@ spec:
               - label: "白色对比度"
                 value: white-contrast
           - $formkit: group
+            if: $get(enableSlide).value
             name: slidePlugin
             label: 插件
             value:
@@ -90,6 +91,7 @@ spec:
                       - value: "RevealZoom"
                         label: Alt + 点击元素放大
           - $formkit: group
+            if: $get(enableSlide).value
             name: individualization
             label: 个性化配置
             value:
@@ -144,7 +146,6 @@ spec:
                     value: true
                   - label: "始终隐藏"
                     value: false
-
 
       - group: copyAdd
         label: "复制追加"
