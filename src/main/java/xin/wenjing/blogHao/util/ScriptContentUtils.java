@@ -185,7 +185,7 @@ public class ScriptContentUtils {
                 case "RevealHighlight":
                     injectPluginScript.append("""
                         <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/highlight/monokai.css">
-                        <script data-pjax src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/highlight/highlight.js" defer></script>
+                        <script src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/plugin/highlight/highlight.js" data-pjax=""></script>
                         """);
                     break;
                 case "RevealMath.KaTeX":
@@ -216,6 +216,14 @@ public class ScriptContentUtils {
         //执行完毕后进行初始化
         injectPluginScript.append("""
             <script data-pjax src="/plugins/plugin-blog-hao/assets/static/custom/slideExecute.js?version=${version}" type="text/javascript" defer></script>
+            <script data-pjax="" type="text/javascript" defer>
+                document.addEventListener("DOMContentLoaded", () => {
+                    new executeSlideInit();
+                })
+                document.addEventListener("pjax:complete", () => {
+                    new executeSlideInit();
+                })
+            </script>
             """);
         return injectPluginScript.toString();
     }

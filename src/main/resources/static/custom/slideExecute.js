@@ -1,5 +1,6 @@
-(function() {
-    function executeSlideInit(){
+;
+(function (){
+    let executeSlideInit = function (){
         // 初始化幻灯片配置
         if(document.querySelector("#reveal-slide")){
             let slideView = new Reveal(document.querySelector('#reveal-slide'), {
@@ -55,12 +56,5 @@
             });
         }
     }
-
-    document.addEventListener("DOMContentLoaded", () => {
-        executeSlideInit()
-    })
-    document.addEventListener("pjax:complete", () => {
-        executeSlideInit();
-    })
-
+    window.executeSlideInit = executeSlideInit;
 })();

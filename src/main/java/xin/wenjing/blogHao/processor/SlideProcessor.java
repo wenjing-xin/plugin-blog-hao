@@ -37,10 +37,6 @@ public class SlideProcessor implements TemplateHeadProcessor {
             return Mono.empty();
         }
 
-        boolean singlePageOrPost = ScriptContentUtils.notContentTemplate(context);
-        if(singlePageOrPost){
-            return Mono.empty();
-        }
         final IModelFactory modelFactory = context.getModelFactory();
         return Mono.just(modelFactory.createText(ScriptContentUtils.slideScript(slideConfig, pluginWrapper.getDescriptor().getVersion()))).doOnNext(model::add).then();
     }

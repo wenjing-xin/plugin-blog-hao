@@ -69,6 +69,7 @@ spec:
               - $formkit: repeater
                 name: enablePlugin
                 id: enablePlugin
+                max: 6
                 label: 启用的插件
                 help: "如果为选择使用该插件，则不会出现对应的效果"
                 children:
