@@ -134,5 +134,10 @@ QQ交流群与QQ频道，加群后管理员自动审核
 &emsp;&emsp;<img src="https://api.minio.yyds.pink/bbs/2024-06-04/1717467714-226493-qq.jpg" width=158px />
 </div>
 
+如果你有什么问题或者好的想法可以向我 [留言](https://blog.wenjing.xin/messageWall)
+
+
+[个人站点](https://blog.wenjing.xin)
+ [插件文档](https://blog.wenjing.xin/docs/halo-plugins)
 
 

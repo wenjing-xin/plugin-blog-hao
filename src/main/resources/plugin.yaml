@@ -9,9 +9,9 @@ spec:
     name: dreamChaser的小屋
     website: https://wenjing.xin
   logo: logo.png
-  homepage: https://github.com/halo-dev/plugin-starter#readme
-  repo: https://github.com/halo-dev/plugin-starter
-  issues: https://github.com/halo-dev/plugin-starter/issues
+  homepage: https://github.com/wenjing-xin/plugin-blog-hao#readme
+  repo: https://github.com/wenjing-xin/plugin-blog-hao
+  issues: https://github.com/wenjing-xin/plugin-blog-hao/issues
   displayName: "blog-hao"
   description: "让你的博客变得更好"
   license:

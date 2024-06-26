@@ -6,8 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * 功能描述
- *
+ * 插件配置
  * @author: dreamChaser
  * @date: 2024年06月16日 00:01
  */

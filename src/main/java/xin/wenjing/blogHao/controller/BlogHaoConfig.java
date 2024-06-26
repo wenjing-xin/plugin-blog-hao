@@ -23,8 +23,6 @@ public class BlogHaoConfig {
 
     private final ReactiveSettingFetcher reactiveSettingFetcher;
 
-    private final PluginWrapper pluginWrapper;
-
     @GetMapping("/slide-config")
     public Mono<Settings.SlideConfig> queryBaseConfigMsg() {
         Mono<Settings.SlideConfig> slideConfigMono =
