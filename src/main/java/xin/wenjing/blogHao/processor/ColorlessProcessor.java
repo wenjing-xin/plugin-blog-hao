@@ -9,6 +9,7 @@ import org.thymeleaf.model.IModel;
 import org.thymeleaf.model.IModelFactory;
 import org.thymeleaf.processor.element.IElementModelStructureHandler;
 import reactor.core.publisher.Mono;
+import run.halo.app.plugin.ReactiveSettingFetcher;
 import run.halo.app.plugin.SettingFetcher;
 import run.halo.app.theme.dialect.TemplateHeadProcessor;
 import xin.wenjing.blogHao.entity.Settings;
@@ -24,30 +25,32 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ColorlessProcessor implements TemplateHeadProcessor {
 
-    private final SettingFetcher settingFetcher;
+    private final ReactiveSettingFetcher settingFetcher;
 
     @Override
     public Mono<Void> process(ITemplateContext context, IModel model, IElementModelStructureHandler structureHandler) {
 
-        Settings.MiniTool miniTool =settingFetcher.fetch(Settings.MiniTool.GROUP_NAME, Settings.MiniTool.class)
-            .orElse(new Settings.MiniTool());
-        LocalDate selfCloseAt = miniTool.getColorless().getSelfCloseAt();
+        return settingFetcher.fetch(Settings.MiniTool.GROUP_NAME, Settings.MiniTool.class)
+            .doOnNext( miniTool -> {
+                LocalDate selfCloseAt = miniTool.getColorless().getSelfCloseAt();
 
-        if(!miniTool.getColorless().isEnableColorless()){
-            return Mono.empty();
-        }
+                if(!miniTool.getColorless().isEnableColorless()){
+                    return;
+                }
 
-        if (selfCloseAt != null && selfCloseAt.isBefore(LocalDate.now())) {
-            return Mono.empty();
-        }
+                if (selfCloseAt != null && selfCloseAt.isBefore(LocalDate.now())) {
+                    return;
+                }
 
-        String templateId = ScriptContentUtils.getTemplateId(context);
-        boolean onlyIndex = BooleanUtils.isNotTrue(miniTool.getColorless().isColorlessScope());
-        if(onlyIndex && !StringUtils.equals("index", templateId)){
-            return Mono.empty();
-        }
-        final IModelFactory modelFactory = context.getModelFactory();
-        return Mono.just(modelFactory.createText(ScriptContentUtils.colorlessStyle())).doOnNext(model::add).then();
+                String templateId = ScriptContentUtils.getTemplateId(context);
+                boolean onlyIndex = BooleanUtils.isNotTrue(miniTool.getColorless().isColorlessScope());
+                if(onlyIndex && !StringUtils.equals("index", templateId)){
+                    return;
+                }
+                final IModelFactory modelFactory = context.getModelFactory();
+                model.add(modelFactory.createText(ScriptContentUtils.colorlessStyle()));
+            }).then();
+
     }
 
 }

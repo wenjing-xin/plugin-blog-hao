@@ -29,7 +29,7 @@ public class ScriptContentUtils {
     public static String copyAddScrProcess(String copyAddContent, String divideType, String copyMinLength) {
 
         String processContent = switch (divideType) {
-            case "line" -> "\\n---\\n" + copyAddContent;
+            case "line" -> "\\n------\\n" + copyAddContent;
             case "emptyLine" -> "\\n \\n" + copyAddContent;
             default -> " " + copyAddContent;
         };

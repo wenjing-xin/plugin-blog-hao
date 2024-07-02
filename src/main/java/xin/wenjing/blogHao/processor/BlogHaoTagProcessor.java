@@ -8,10 +8,7 @@ import org.thymeleaf.model.IModel;
 import org.thymeleaf.model.IModelFactory;
 import org.thymeleaf.processor.element.IElementModelStructureHandler;
 import reactor.core.publisher.Mono;
-import run.halo.app.plugin.SettingFetcher;
 import run.halo.app.theme.dialect.TemplateHeadProcessor;
-import xin.wenjing.blogHao.entity.Settings;
-import xin.wenjing.blogHao.util.InferStream;
 import xin.wenjing.blogHao.util.ScriptContentUtils;
 
 /**
@@ -24,26 +21,16 @@ import xin.wenjing.blogHao.util.ScriptContentUtils;
 @AllArgsConstructor
 public class BlogHaoTagProcessor implements TemplateHeadProcessor {
 
-    private final SettingFetcher settingFetcher;
-
     private final PluginWrapper pluginWrapper;
 
     @Override
     public Mono<Void> process(ITemplateContext context, IModel model,
         IElementModelStructureHandler structureHandler) {
         final IModelFactory modelFactory = context.getModelFactory();
-
-        return InferStream.<Void>infer(true)
-            .success(() -> settingFetcher
-                .fetch("miniTools", Settings.MiniTool.class)
-                .map(config -> {
-                    model.add(modelFactory.createText(
-                        ScriptContentUtils.blogHaoEle(pluginWrapper.getDescriptor().getVersion()
-                        )));
-                    return Mono.empty();
-                })
-                .orElse(Mono.empty()).then()).last();
+        String version = pluginWrapper.getDescriptor().getVersion();
+        return Mono.just(modelFactory.createText(ScriptContentUtils.blogHaoEle(version)))
+            .doOnNext(model::add)
+            .then();
     }
-
 
 }

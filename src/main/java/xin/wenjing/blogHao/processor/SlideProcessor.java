@@ -8,7 +8,7 @@ import org.thymeleaf.model.IModel;
 import org.thymeleaf.model.IModelFactory;
 import org.thymeleaf.processor.element.IElementModelStructureHandler;
 import reactor.core.publisher.Mono;
-import run.halo.app.plugin.SettingFetcher;
+import run.halo.app.plugin.ReactiveSettingFetcher;
 import run.halo.app.theme.dialect.TemplateHeadProcessor;
 import xin.wenjing.blogHao.entity.Settings;
 import xin.wenjing.blogHao.util.ScriptContentUtils;
@@ -23,21 +23,22 @@ import xin.wenjing.blogHao.util.ScriptContentUtils;
 @AllArgsConstructor
 public class SlideProcessor implements TemplateHeadProcessor {
 
-    private final SettingFetcher settingFetcher;
+    private final ReactiveSettingFetcher settingFetcher;
 
     private final PluginWrapper pluginWrapper;
 
     @Override
     public Mono<Void> process(ITemplateContext context, IModel model, IElementModelStructureHandler structureHandler) {
 
-        Settings.SlideConfig slideConfig =settingFetcher.fetch(Settings.SlideConfig.GROUP_NAME, Settings.SlideConfig.class)
-            .orElse(new Settings.SlideConfig());
+        return settingFetcher.fetch(Settings.SlideConfig.GROUP_NAME, Settings.SlideConfig.class)
+            .doOnNext( slideConfig -> {
+                if(!slideConfig.isEnableSlide()){
+                    return;
+                }
+                final IModelFactory modelFactory = context.getModelFactory();
+                String version = pluginWrapper.getDescriptor().getVersion();
+                model.add(modelFactory.createText(ScriptContentUtils.slideScript(slideConfig, version)));
+            }).then();
 
-        if(!slideConfig.isEnableSlide()){
-            return Mono.empty();
-        }
-
-        final IModelFactory modelFactory = context.getModelFactory();
-        return Mono.just(modelFactory.createText(ScriptContentUtils.slideScript(slideConfig, pluginWrapper.getDescriptor().getVersion()))).doOnNext(model::add).then();
     }
 }
