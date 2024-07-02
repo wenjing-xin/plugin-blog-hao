@@ -1,13 +1,13 @@
 package xin.wenjing.blogHao.processor;
 
 import lombok.AllArgsConstructor;
-import org.pf4j.PluginWrapper;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IModel;
 import org.thymeleaf.model.IModelFactory;
 import org.thymeleaf.processor.element.IElementModelStructureHandler;
 import reactor.core.publisher.Mono;
+import run.halo.app.plugin.PluginContext;
 import run.halo.app.plugin.ReactiveSettingFetcher;
 import run.halo.app.theme.dialect.TemplateHeadProcessor;
 import xin.wenjing.blogHao.entity.Settings;
@@ -25,7 +25,7 @@ public class SlideProcessor implements TemplateHeadProcessor {
 
     private final ReactiveSettingFetcher settingFetcher;
 
-    private final PluginWrapper pluginWrapper;
+    private final PluginContext pluginContext;
 
     @Override
     public Mono<Void> process(ITemplateContext context, IModel model, IElementModelStructureHandler structureHandler) {
@@ -36,7 +36,7 @@ public class SlideProcessor implements TemplateHeadProcessor {
                     return;
                 }
                 final IModelFactory modelFactory = context.getModelFactory();
-                String version = pluginWrapper.getDescriptor().getVersion();
+                String version = pluginContext.getVersion();
                 model.add(modelFactory.createText(ScriptContentUtils.slideScript(slideConfig, version)));
             }).then();
 

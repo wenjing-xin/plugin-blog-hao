@@ -11,8 +11,10 @@
     "@halo-dev/components": "^2.12.0",
     "@halo-dev/console-shared": "^2.12.0",
     "@halo-dev/richtext-editor": "^2.16.0",
+    "ace-builds": "^1.35.2",
     "axios": "^1.7.2",
-    "canvas-confetti": "^1.9.2",
+    "github-markdown-css": "^5.6.1",
+    "lodash.debounce": "^4.0.8",
     "reveal.js": "^5.1.0",
     "vue": "^3.3.12"
   },

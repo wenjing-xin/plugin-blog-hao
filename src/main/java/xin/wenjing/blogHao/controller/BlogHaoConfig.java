@@ -1,7 +1,6 @@
 package xin.wenjing.blogHao.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.pf4j.PluginWrapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
