@@ -16,6 +16,6 @@ spec:
   description: "让你的博客变得更好"
   license:
     - name: "GPL-3.0"
-      url: "https://github.com/halo-dev/plugin-starter/blob/main/LICENSE"
+      url: "https://github.com/wenjing-xin/plugin-blog-hao/blob/main/LICENSE"
   settingName: plugin-blog-hao-setting
   configMapName: plugin-blog-hao-configMap

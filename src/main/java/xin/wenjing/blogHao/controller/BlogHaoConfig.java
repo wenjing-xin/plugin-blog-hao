@@ -30,7 +30,4 @@ public class BlogHaoConfig {
                 .map(item -> item);
         return slideConfigMono;
     }
-
-
-
 }
