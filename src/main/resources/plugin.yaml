@@ -4,7 +4,7 @@ metadata:
   name: plugin-blog-hao
 spec:
   enabled: true
-  requires: ">=2.14.0"
+  requires: ">=2.15.0"
   author:
     name: dreamChaser的小屋
     website: https://wenjing.xin
