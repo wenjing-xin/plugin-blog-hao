@@ -159,7 +159,7 @@ public class ScriptContentUtils {
                 <script data-pjax src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/dist/reveal.js"></script>
           """;
 
-        String pluginTmpl = ebableSlidePlugin(slideConfig);
+        String pluginTmpl = enableSlidePlugin(slideConfig);
         return PROPERTY_PLACEHOLDER_HELPER.replacePlaceholders(scriptTmpl + pluginTmpl, properties);
     }
 
@@ -168,7 +168,7 @@ public class ScriptContentUtils {
      * @param slideConfig
      * @return
      */
-    public static String ebableSlidePlugin(Settings.SlideConfig slideConfig){
+    public static String enableSlidePlugin(Settings.SlideConfig slideConfig){
 
         List<Settings.EnablePlugin> slidePluginList = slideConfig.getSlidePlugin().getEnablePlugin();
         StringBuilder injectPluginScript = new StringBuilder();
