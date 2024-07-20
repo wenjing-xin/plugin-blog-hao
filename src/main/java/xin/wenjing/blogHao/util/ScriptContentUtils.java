@@ -154,7 +154,6 @@ public class ScriptContentUtils {
         properties.setProperty("themeName", slideConfig.getThemeName());
         properties.setProperty("version", version);
         final String scriptTmpl = """
-                <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/revealjs/dist/reset.css" />
                 <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/revealjs/dist/reveal.css" />
                 <link rel="stylesheet" href="/plugins/plugin-blog-hao/assets/static/libs/revealjs/dist/theme/${themeName}.css" id="theme">
                 <script data-pjax src="/plugins/plugin-blog-hao/assets/static/libs/revealjs/dist/reveal.js"></script>

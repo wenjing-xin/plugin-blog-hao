@@ -192,8 +192,8 @@ function currentCursorSlide(cursorLine: number) {
         width: 48%;
         height: 48vh;
         margin: 0 auto;
-        box-shadow: 0px 12px 32px 4px rgba(0, 0, 0, .04),
-            0px 8px 20px rgba(0, 0, 0, .08);
+        /**  box-shadow: 0px 12px 32px 4px rgba(0, 0, 0, .04),
+            0px 8px 20px rgba(0, 0, 0, .08);*/
     }
 
 }
