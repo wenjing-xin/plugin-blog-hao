@@ -28,14 +28,21 @@ public class CopyAddHeadProcessor implements TemplateHeadProcessor {
     public Mono<Void> process( ITemplateContext context, IModel model, IElementModelStructureHandler structureHandler) {
         return settingFetcher.fetch(Settings.CopyAdd.GROUP_NAME, Settings.CopyAdd.class)
                 .doOnNext( copyAdd -> {
-                    // 复制内容追加
-                    if (copyAdd.isContentPageOnly() && ScriptContentUtils.notContentTemplate(context)) {
-                        return;
-                    }
-                    String copyAddScript = ScriptContentUtils.copyAddScrProcess(copyAdd.getCopyAddContent(), copyAdd.getDivideType(), copyAdd.getCopyMinLength());
-                    final IModelFactory modelFactory = context.getModelFactory();
-                    model.add(modelFactory.createText(copyAddScript));
+                    copyAddScript(copyAdd, context).doOnNext(copyAddScript->{
+                        final IModelFactory modelFactory = context.getModelFactory();
+                        model.add(modelFactory.createText(copyAddScript));
+                    }).then();
                 }).then();
+
+    }
+
+    public Mono<String> copyAddScript(Settings.CopyAdd copyAdd, ITemplateContext context){
+        // 复制内容追加
+        if (copyAdd.isContentPageOnly() && ScriptContentUtils.notContentTemplate(context)) {
+            return Mono.empty();
+        }
+        return Mono.just(ScriptContentUtils.copyAddScrProcess(copyAdd.getCopyAddContent(),
+                copyAdd.getDivideType(), copyAdd.getCopyMinLength()));
 
     }
 }

@@ -160,7 +160,6 @@ function extractHeight(occupied, width, height) {
                     render: this.getAttribute("render") || "md"
                 };
                 let slideContent = getDirectEle(this, "slide-content");
-                console.log(slideContent)
                 if(this.options.render == "md"){
                     slideContent = slideContent.innerHTML.trim().replaceAll("<br>", "---");
                 }

@@ -33,10 +33,8 @@
                             mousewheel: true,
                             effect: 'cards'
                         })
-                        console.log("cardzhixing",999)
                         break;
                     case "thumbs":
-                        console.log("thumbs")
                         const galleryThumbs = new Swiper('#gallery-thumbs', {
                             loop: true,
                             autoplay: true,

@@ -32,12 +32,12 @@ public class SlideProcessor implements TemplateHeadProcessor {
 
         return settingFetcher.fetch(Settings.SlideConfig.GROUP_NAME, Settings.SlideConfig.class)
             .doOnNext( slideConfig -> {
-                if(!slideConfig.isEnableSlide()){
-                    return;
+                if(slideConfig.isEnableSlide()) {
+                    final IModelFactory modelFactory = context.getModelFactory();
+                    String version = pluginContext.getVersion();
+                    model.add(modelFactory.createText(
+                        ScriptContentUtils.slideScript(slideConfig, version)));
                 }
-                final IModelFactory modelFactory = context.getModelFactory();
-                String version = pluginContext.getVersion();
-                model.add(modelFactory.createText(ScriptContentUtils.slideScript(slideConfig, version)));
             }).then();
 
     }

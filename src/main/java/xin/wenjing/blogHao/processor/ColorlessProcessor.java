@@ -31,25 +31,29 @@ public class ColorlessProcessor implements TemplateHeadProcessor {
 
         return settingFetcher.fetch(Settings.MiniTool.GROUP_NAME, Settings.MiniTool.class)
             .doOnNext( miniTool -> {
-                LocalDate selfCloseAt = miniTool.getColorless().getSelfCloseAt();
-
-                if(!miniTool.getColorless().isEnableColorless()){
-                    return;
-                }
-
-                if (selfCloseAt != null && selfCloseAt.isBefore(LocalDate.now())) {
-                    return;
-                }
-
-                String templateId = ScriptContentUtils.getTemplateId(context);
-                boolean onlyIndex = BooleanUtils.isNotTrue(miniTool.getColorless().isColorlessScope());
-                if(onlyIndex && !StringUtils.equals("index", templateId)){
-                    return;
-                }
+                String scriptTmpl = colorLessScript(miniTool, context);
                 final IModelFactory modelFactory = context.getModelFactory();
-                model.add(modelFactory.createText(ScriptContentUtils.colorlessStyle()));
+                model.add(modelFactory.createText(scriptTmpl));
             }).then();
 
+    }
+
+    public String colorLessScript(Settings.MiniTool miniTool, ITemplateContext context){
+
+        LocalDate selfCloseAt = miniTool.getColorless().getSelfCloseAt();
+
+        if(!miniTool.getColorless().isEnableColorless()){
+            return "";
+        }
+        if (selfCloseAt != null && selfCloseAt.isBefore(LocalDate.now())) {
+            return "";
+        }
+        String templateId = ScriptContentUtils.getTemplateId(context);
+        boolean onlyIndex = BooleanUtils.isNotTrue(miniTool.getColorless().isColorlessScope());
+        if(onlyIndex && !StringUtils.equals("index", templateId)){
+            return "";
+        }
+        return ScriptContentUtils.colorlessStyle();
     }
 
 }

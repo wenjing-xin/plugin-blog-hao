@@ -41,25 +41,33 @@ public class ScriptContentUtils {
 
         final String scriptContent =
             """
-                <script data-pjax type="text/javascript">
-                    function contentParse(content) {
-                        let parsed = content;
-                        parsed = parsed.replaceAll("#url", window.location.href);
-                        parsed = parsed.replaceAll("#site", window.location.host);
-                        return parsed;
-                    }
-                    window.addEventListener("copy", (event) => {
-                        let clipboard = event.clipboardData || window.clipboardData
-                        let clipboardText = window.getSelection().toString()
-                        if (!clipboard || clipboardText.length <= ${copyMinLength}) {
-                            return;
-                        }else if (clipboardText !== "") {
-                            event.preventDefault()
-                            clipboard.setData("text/plain", clipboardText + contentParse("${parseContent}"))
+                    <script data-pjax type="text/javascript">
+                        function contentParse(content) {
+                            let parsed = content;
+                            parsed = parsed.replaceAll("#url", window.location.href);
+                            parsed = parsed.replaceAll("#site", window.location.host);
+                            return parsed;
                         }
-                    })
-                </script>
-            """;
+                        function copyAddEvent(){
+                             document.addEventListener("copy", (event) => {
+                                 let clipboard = event.clipboardData || window.clipboardData
+                                 let clipboardText = window.getSelection().toString()
+                                 if (!clipboard || clipboardText.length <= ${copyMinLength}) {
+                                     return;
+                                 }else if (clipboardText !== "") {
+                                     event.preventDefault()
+                                     clipboard.setData("text/plain", clipboardText + contentParse("${parseContent}"))
+                                 }
+                             })
+                        }
+                        document.addEventListener('DOMContentLoaded', function() {
+                            copyAddEvent();
+                        });
+                        document.addEventListener("pjax:complete", () => {
+                            copyAddEvent();
+                        })
+                    </script>
+                """;
         return PROPERTY_PLACEHOLDER_HELPER.replacePlaceholders(scriptContent, properties);
     }
 

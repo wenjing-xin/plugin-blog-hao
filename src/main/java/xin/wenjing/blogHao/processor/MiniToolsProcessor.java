@@ -28,9 +28,6 @@ public class MiniToolsProcessor implements TemplateHeadProcessor {
         return settingFetcher.fetch(Settings.MiniTool.GROUP_NAME, Settings.MiniTool.class)
             .doOnNext( miniTool -> {
                 String scriptRes = miniToolsScript( miniTool);
-                if(scriptRes == null && scriptRes.length() == 0){
-                    return;
-                }
                 final IModelFactory modelFactory = context.getModelFactory();
                 model.add(modelFactory.createText(scriptRes));
             }).then();
@@ -38,7 +35,7 @@ public class MiniToolsProcessor implements TemplateHeadProcessor {
 
     private String miniToolsScript(Settings.MiniTool miniTool) {
 
-        StringBuilder injectCode = new StringBuilder();
+        StringBuilder injectCode = new StringBuilder("");
         // 中英文空格脚本
         if(miniTool.getContentSpace().isEnableContentSpace()){
             injectCode.append(ScriptContentUtils.panguScript(miniTool));
