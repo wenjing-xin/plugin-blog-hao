@@ -109,7 +109,7 @@ public class ScriptContentUtils {
                     document.addEventListener("DOMContentLoaded", function() {
                        pangu.autoSpacingPage();
                     })
-                </script>              
+                </script>             
                 """.formatted(config.getContentSpace().getScanContent());
     }
 

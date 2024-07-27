@@ -236,10 +236,28 @@ spec:
                     value: false
               - $formkit: text
                 if: $get(enableContentIndent).value
-                label: 内容缩进的节点类名或者ID名
-                name: indentNodeName
+                label: 文章内容缩进的节点类名或者ID名
+                name: postIndentNodeName
                 value: "#post"
-                help: 根据自己使用的主题选择要适配的内容节点
+                help: 根据自己使用的主题文章节点选择要适配的内容节点
+              - $formkit: text
+                if: $get(enableContentIndent).value
+                label: 单页面内容缩进的节点类名或者ID名
+                name: pageIndentNodeName
+                value: "#page"
+                help: 根据自己使用的主题单页面节点选择要适配的内容节点
+              - $formkit: select
+                if: $get(enableContentIndent).value
+                name: isOnlyPostIndent
+                id: isOnlyPostIndent
+                key: isOnlyPostIndent
+                label: 是否仅针对文章页面生效
+                value: globalPage
+                options:
+                  - value: onlyPost
+                    label: 仅针对文章页面
+                  - value: globalPage
+                    label: 所有页面
           - $formkit: group
             name: colorless
             label: 站点失色

@@ -65,7 +65,9 @@ public class Settings {
     @Data
     public static class ContentIndent{
         private boolean enableContentIndent;
-        private String indentNodeName;
+        private String postIndentNodeName;
+        private String pageIndentNodeName;
+        private String isOnlyPostIndent;
     }
 
     /**
