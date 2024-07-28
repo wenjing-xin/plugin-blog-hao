@@ -1,9 +1,7 @@
 apiVersion: v1alpha1
 kind: Setting
-
 metadata:
     name: plugin-blog-hao-setting
-
 spec:
     forms:
       - group: slideConfig
@@ -165,7 +163,7 @@ spec:
             options:
               - label: "空格"
                 value: space
-              - label: "横线 ---"
+              - label: "横线 ------"
                 value: line
               - label: "空行"
                 value: emptyLine
