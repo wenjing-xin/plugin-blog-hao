@@ -8,10 +8,14 @@ import org.thymeleaf.model.IModel;
 import org.thymeleaf.model.IModelFactory;
 import org.thymeleaf.processor.element.IElementModelStructureHandler;
 import reactor.core.publisher.Mono;
+import run.halo.app.plugin.PluginContext;
 import run.halo.app.plugin.ReactiveSettingFetcher;
 import run.halo.app.theme.dialect.TemplateHeadProcessor;
 import xin.wenjing.blogHao.entity.Settings;
 import xin.wenjing.blogHao.util.ScriptContentUtils;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -27,6 +31,7 @@ public class MiniToolsProcessor implements TemplateHeadProcessor {
 
     static final PropertyPlaceholderHelper PROPERTY_PLACEHOLDER_HELPER = new PropertyPlaceholderHelper("${", "}");
 
+    private final PluginContext pluginContext;
 
     @Override
     public Mono<Void> process(ITemplateContext context, IModel model, IElementModelStructureHandler structureHandler) {
@@ -42,7 +47,14 @@ public class MiniToolsProcessor implements TemplateHeadProcessor {
 
         final Properties contentIndentProperties = new Properties();
         contentIndentProperties.setProperty("postNodeName", miniTool.getContentIndent().getPostIndentNodeName());
+        contentIndentProperties.setProperty("pageNodeName", miniTool.getContentIndent().getPageIndentNodeName());
+        contentIndentProperties.setProperty("version", pluginContext.getVersion());
+        List<String> excludeNodeName = new ArrayList<>();
+        miniTool.getContentIndent().getExcludeNodeList().stream().forEach(item -> {
+            excludeNodeName.add(item.getNodeName());
+        });
 
+        contentIndentProperties.setProperty("excludeEle", excludeNodeName.toString());
         StringBuilder injectCode = new StringBuilder();
 
         // 中英文空格脚本
@@ -52,28 +64,35 @@ public class MiniToolsProcessor implements TemplateHeadProcessor {
 
         // 段落内容首行缩进
         if(miniTool.getContentIndent().isEnableContentIndent()){
+
             String templateId = ScriptContentUtils.getTemplateId(context);
-            final String postIndentStyle = """
-                                      <style type="text/css">
-                                            ${postNodeName} p:not(li>p):not(blockquote>p){text-indent: 2em;}
-                                      </style>
-                                      """;
-            final String allIndentStyle = """
-                                      <style type="text/css">
-                                            ${postNodeName} p:not(li>p):not(blockquote>p){
-                                                text-indent: 2em;
-                                            }
-                                            ${pageNodeName} p:not(li>p):not(blockquote>p){
-                                                text-indent: 2em;
-                                            }
-                                      </style>
-                                      """;
+
+            final String jsScript = """
+                                      <script src="/plugins/plugin-blog-hao/assets/static/custom/textIndent.js?v=${version}"></script>
+                                      <script data-pjax type="text/javascript">
+                                          function initTextIndent(){
+                                              let nodeName = {
+                                                    postNodeName: "${postNodeName}",
+                                                    pageNodeName: "${pageNodeName}"
+                                              }
+                                              let excludeEle = "${excludeEle}";
+                                              new executeTextIndent(nodeName, excludeEle, ${isOnlyPost});
+                                          }
+                                          document.addEventListener("DOMContentLoaded", function() {
+                                              initTextIndent();
+                                          });
+                                          document.addEventListener("pjax:complete", function() {
+                                              initTextIndent();
+                                          });
+                                      </script>
+                                    """;
             if(miniTool.getContentIndent().getIsOnlyPostIndent().equals("onlyPost") && templateId.equals("post")){
-                injectCode.append(PROPERTY_PLACEHOLDER_HELPER.replacePlaceholders(postIndentStyle, contentIndentProperties));
+                contentIndentProperties.setProperty("isOnlyPost", "true");
             }else if(miniTool.getContentIndent().getIsOnlyPostIndent().equals("globalPage")){
-                contentIndentProperties.setProperty("pageNodeName", miniTool.getContentIndent().getPageIndentNodeName());
-                injectCode.append(PROPERTY_PLACEHOLDER_HELPER.replacePlaceholders(allIndentStyle, contentIndentProperties));
+                contentIndentProperties.setProperty("isOnlyPost", "false");
             }
+            String executeJs = PROPERTY_PLACEHOLDER_HELPER.replacePlaceholders(jsScript, contentIndentProperties);
+            injectCode.append(executeJs);
         }
 
         return injectCode.toString();

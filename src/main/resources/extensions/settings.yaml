@@ -258,6 +258,21 @@ spec:
                     label: 仅针对文章页面
                   - value: globalPage
                     label: 所有页面
+              - $formkit: repeater
+                if: $get(enableContentIndent).value
+                id: excludeNodeList
+                key: excludeNodeList
+                name: excludeNodeList
+                label: 排除缩进的一些元素
+                help: 比如一些图片元素被包裹在p标签里，那么就填写img，对其进行排除或者排除p标签内含有某个类名、id名的属性
+                value: [ ]
+                max: 12
+                min: 0
+                children:
+                  - $formkit: text
+                    name: nodeName
+                    value:
+                    label: 排除的节点名称
           - $formkit: group
             name: colorless
             label: 站点失色

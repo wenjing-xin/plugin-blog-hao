@@ -68,6 +68,12 @@ public class Settings {
         private String postIndentNodeName;
         private String pageIndentNodeName;
         private String isOnlyPostIndent;
+        private List<ExcludeNodeList> excludeNodeList;
+    }
+
+    @Data
+    public static class ExcludeNodeList{
+        private String nodeName;
     }
 
     /**
